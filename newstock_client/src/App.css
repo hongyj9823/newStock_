@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap');
+
+.App {
+  text-align: center;
+  
+}
+
+.Frame {
+  font-family: 'Cinzel',serif;
+  width : 80%;
+  margin : 0 auto;
+  cursor : default;
+}
+
+
+.h1 {
+  font-size : 40px;
+  width : 300px;
+  text-align: center;
+  margin : 0 auto;
+}
+
+.button {
+  float : right ;
+  margin-right : 10px;
+  border : none;
+  border-radius : 15px;
+  padding : 2px 10px;
+  background : white;
+  transition-duration : 0.4s;
+  font-size : 15px;
+  text-align : center;
+}
+
+.button:hover {
+  background : black;
+  color : white;
+}
