@@ -11,8 +11,7 @@ const rootNode = document.getElementById('root');
 ReactDOM.createRoot(rootNode).render(
   <BrowserRouter>
     <App />
-  </BrowserRouter>,
-  document.getElementById('root')
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,9 +1,6 @@
-import { useLocation } from "react-router-dom";
-import Test from './test.js';
+import React from "react";
 
-import React, { useState } from "react";
-import axios from "axios";
-export default function Dailynews(props) {
+export default function DailyNews(props) {
 
         // const location = useLocation() ;
         // console.log(location.pathname);
@@ -11,7 +8,6 @@ export default function Dailynews(props) {
             <div>
                 daily news about 
                
-<Test/>
             </div>
         )   
 
