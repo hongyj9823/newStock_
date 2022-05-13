@@ -3,17 +3,16 @@
 
 # 서버 가상환경 설정 방법(윈도우)
 
-1. 터미널에 다음 코드 차례대로 입력
-2. py -3 -m venv .venv
+1. py -3 -m venv .venv
+2. .venv\scripts\activate
 
-3. .venv\scripts\activate
-4. cd newStockServer
+3. cd newStockServer
+4. pip install --upgrade pip
 
-5. pip install --upgrade pip
-6. pip install -r requirements.txt
+5. pip install -r requirements.txt
+6. deactivate
 
-7. deactivate
-8. cd ..
+7. cd ..
 만약 java_home 관련 문제 생기면 .venv폴더를 지우고 https://konlpy.org/en/latest/install/#id2 를 참조하여 문제를 해결한 뒤 처음부터 다시 해주세요
 
 # 클라이언트 처음 설치 방법
@@ -45,5 +44,5 @@
 3. 127.0.0.1:8000/db/annual/stock=[a] : a에 대한 연간 차트
 4. 127.0.0.1:8000/db/daily/stock=[a] : a에 대한 일일 차트
 
-5. 127.0.0.1:8000/db/pastNews/query=[a]&date=[yymmdd]
+5. 127.0.0.1:8000/db/pastNews/query=[a]&date=[yymmdd] : 
     yymmdd날 a를 검색했을때 나오는 뉴스들
