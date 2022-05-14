@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import {v4 as uuidv4} from 'uuid'
 
 import BubbleUI from "react-bubble-ui";
 import ReactTooltip from "react-tooltip";
 import Child from "./keywordBubble";
+import NewsOverlay from "./newsOverlay"
 
 import getKeywordDB from './keywordDBGetter'
 
@@ -13,6 +13,9 @@ import "./keywordPanel.css";
 
 export default function KeywordPanel() {
     const [keywords, setKeywordsComponent] = useState([])
+    const [overlay, setOverlay] = useState({})
+
+
 
     const options = {
         size : 200,
@@ -29,21 +32,43 @@ export default function KeywordPanel() {
         gravitation : 5
     };
     
+
+
+    useEffect(() => {
+    }, [overlay])
+
     useEffect(() => {
         ReactTooltip.rebuild()
     }, [keywords])
 
+
+
     async function handleRefresh(e) {
         const newsList = await getKeywordDB()
-        console.log(newsList)
         setKeywordsComponent(newsList)
     }
 
-    const children = keywords.map((keyword) => {
+
+
+    function updateOverlay(data) {
+        setOverlay(data)
+    }
+
+
+
+    const children = keywords.map((keyword, index) => {
         return (
-            <Child data = {keyword} className = "keywordBubble" key = {keyword.id} />
+            <Child data = {keyword} updater = {updateOverlay} className = "keywordBubble" key = {index} />
         );
     });
+
+
+
+    if (Object.entries(overlay).length !== 0) {
+        document.body.classList.add('active-modal')
+    } else {
+        document.body.classList.remove('active-modal')
+    }
 
     return (
         <>
@@ -52,6 +77,11 @@ export default function KeywordPanel() {
         </BubbleUI>
         <ReactTooltip className = "eachBub" id = "bubble" effect ="solid" data-delayHide="0"/>
         <button onClick={handleRefresh}>Refresh</button>
+        
+        {
+            (Object.entries(overlay).length !== 0) ? 
+            (<NewsOverlay props = {overlay} updater = {updateOverlay}/>) : (<></>)
+        } 
         </>
     );
 }
