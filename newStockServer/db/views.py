@@ -18,9 +18,9 @@ def getKeywordDatabaseJson(request):
         if keyword_data.news_title_1 != None and keyword_data.news_url_1 != None:
             single_data['news'].append({'title' : keyword_data.news_title_1, 'url' : keyword_data.news_url_1})
         if keyword_data.news_title_2 != None and keyword_data.news_url_2 != None:
-            single_data['news'].append({'title' : keyword_data.news_title_1, 'url' : keyword_data.news_url_2})
+            single_data['news'].append({'title' : keyword_data.news_title_2, 'url' : keyword_data.news_url_2})
         if keyword_data.news_title_3 != None and keyword_data.news_url_3 != None:
-            single_data['news'].append({'title' : keyword_data.news_title_1, 'url' : keyword_data.news_url_3})
+            single_data['news'].append({'title' : keyword_data.news_title_3, 'url' : keyword_data.news_url_3})
         data.append(single_data)
     
     return JsonResponse({'data': data}, json_dumps_params={'ensure_ascii':False})
