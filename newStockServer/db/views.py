@@ -33,8 +33,6 @@ def getStockDatabaseJson(request):
     for stock_data in stock_datas:
         single_data = {}
         single_data['name'] = stock_data.stock_name
-        single_data['code'] = stock_data.stock_code
-        single_data['price'] = stock_data.start_price
         single_data['rate'] = stock_data.change_rate
         data.append(single_data)
     
