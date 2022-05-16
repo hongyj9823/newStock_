@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 
 from NewsTab.KeywordGenerator import generateKeywords
 from NewsTab.SelectStock import getTopStocks
-from StockTab.AnnualPriceSave import get_sise
-from db.models import AnnualPrice, Keywords, Stocks
+from StockTab.WebCrawler import getAllSise, getStocksInfo, getPriceOnly
+from db.models import AnnualPrice, Keywords, Stocks, DailyPrice
 
 
 
@@ -46,44 +46,60 @@ def initStockDB():
     Stocks.objects.all().delete()
 
     name = ['삼성전자', 'LG에너지솔루션', 'NAVER', '카카오', 'KB금융', 'SK', 'LG화학', 'SK이노베이션', '현대차', '기아',
-                '삼성바이오로직스', '셀트리온', 'HMM', '대한항공', '삼성생명', '삼성화재', '두산에너빌리티', '한온시스템', '삼성물산', 'POSCO홀딩스']
+            '삼성바이오로직스', '셀트리온', 'HMM', '대한항공', '삼성생명', '삼성화재', '두산에너빌리티', '한온시스템', '삼성물산', '이마트',
+            'POSCO홀딩스', '고려아연', '리노공업', '동진쎄미켐', '셀트리온제약', '씨젠', 'CJ제일제당', '오리온', '미래에셋증권', '메리츠증권',
+            '에코프로비엠', '에코프로', '셀트리온헬스케어', 'CJ프레시웨이', '에스에프에이', '고영', '알테오젠', '레고켐바이오', '엘앤에프', '대주전자재료',
+            '천보', '솔브레인', '포스코케미칼', '쌍용C&E', '현대건설', 'GS건설', '스튜디오드래곤', 'JYP Ent.', '케이엠더블유', '서진시스템',
+            '지씨셀', 'HLB생명과학', '카카오게임즈', '펄어비스', '안랩', '디어유', '오스템임플란트', '파크시스템스', '하림지주', '매일유업']
     code = ['005930', '373220', '035420', '035720', '105560', '034730', '051910', '096770', '005380', '000270',
-            '207940', '068270', '011200', '003490', '032830', '000810', '034020', '018880', '028260', '005490']
+            '207940', '068270', '011200', '003490', '032830', '000810', '034020', '018880', '028260', '139480',
+            '005490', '010130', '058470', '005290', '068760', '096530', '097950', '271560', '006800', '008560',
+            '247540', '086520', '091990', '051500', '056190', '098460', '196170', '141080', '066970', '078600',
+            '278280', '357780', '003670', '003410', '000720', '006360', '253450', '035900', '032500', '178320',
+            '144510', '067630', '293490', '263750', '053800', '376300', '048260', '140860', '003380', '267980']
 
     print('Filling Stock Database')
     for i in range(0, len(code)):
-        Stocks(stock_name=name[i], stock_code=code[i]).save()
+        price, rate = getStocksInfo(code[i])
+        Stocks(stock_name=name[i], stock_code=code[i],
+                start_price=price, change_rate=rate).save()
 
 
 
 def initAnnualPriceDB():
     print('Clearing Annual Price Database')
-    AnnualPrice.objects.all().delete()
+    # 할지 안할지 생각해보기
 
-    name = ['삼성전자', 'LG에너지솔루션', 'NAVER', '카카오', 'KB금융', 'SK', 'LG화학', 'SK이노베이션', '현대차', '기아',
-                '삼성바이오로직스', '셀트리온', 'HMM', '대한항공', '삼성생명', '삼성화재', '두산에너빌리티', '한온시스템', '삼성물산', 'POSCO홀딩스']
-    code = ['005930', '373220', '035420', '035720', '105560', '034730', '051910', '096770', '005380', '000270',
-            '207940', '068270', '011200', '003490', '032830', '000810', '034020', '018880', '028260', '005490']
+    datas = Stocks.objects.values_list('stock_name', 'stock_code')
     today = datetime.today().strftime("%Y%m%d")
     lastyear = (datetime.today() - timedelta(365)).strftime("%Y%m%d")
 
     print('Filling Annual Price Database')
-    for i in range(0, len(code)):
-        siseList = get_sise(code[i], lastyear, today, 'day')
-
+    for data in datas:
+        siseList = getAllSise(data[1], lastyear, today, 'day')
         for j in range(1, len(siseList)):
-            AnnualPrice(stock_name=name[i], date=siseList[j][0],
-                        start_price=siseList[j][1], end_price=siseList[j][4]).save()
+             #'날짜', '시가', '고가', '저가', '종가'
+            AnnualPrice(stock_name=data[0], date=siseList[j][0], start_price=siseList[j][1],
+                        max_price=siseList[j][2], min_price=siseList[j][3], end_price=siseList[j][4]).save()
+        
 
 
-# TODO: 
 def initDailyPriceDB():
-    pass
+    datas = Stocks.objects.values_list('stock_name', 'stock_code')
+    now = datetime.now().strftime("%H%M")
+    if now >= "0900" and now <= "1500":
+        if now == "0900":
+            print('Clearing Daily Database')
+            DailyPrice.objects.all().delete()
+
+        for data in datas:
+            p = getPriceOnly(data[1])
+            DailyPrice(stock_name=data[0], time=now, price=p).save()
 
 
 
 def initAll():
-    init_funcs = [initKeywordsDB] #, initStockDB, initAnnualPriceDB, initDailyPriceDB]
+    init_funcs = [initKeywordsDB, initStockDB, initAnnualPriceDB, initDailyPriceDB]
 
     threads = [threading.Thread(target = func) for func in init_funcs]
     

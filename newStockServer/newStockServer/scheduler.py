@@ -6,8 +6,8 @@ def scheduleAll():
     sched = BackgroundScheduler()
 
     sched.add_job(updateKeywordsDB, 'interval', minutes = 30)
-    sched.add_job(updateStocksDB, 'interval', seconds = 10)
+    sched.add_job(updateStocksDB, 'interval', minutes = 1)
     sched.add_job(updateAnnualPriceDB, 'cron', hour = '4', minute = '0')
-    sched.add_job(updateDailyPriceDB, 'interval', seconds = 5)
+    sched.add_job(updateDailyPriceDB, 'interval', minutes = 1)
 
     sched.start()

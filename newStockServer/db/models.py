@@ -16,9 +16,18 @@ class Keywords(models.Model):
 class Stocks(models.Model) :
     stock_name = models.CharField(max_length=100)
     stock_code = models.CharField(max_length=10)
+    start_price = models.IntegerField()
+    change_rate = models.FloatField()
     
 class AnnualPrice(models.Model) :
     stock_name = models.CharField(max_length=100)
     date = models.CharField(max_length=10)
     start_price = models.IntegerField()
+    max_price = models.IntegerField()
+    min_price = models.IntegerField()
     end_price = models.IntegerField()
+
+class DailyPrice(models.Model) :
+    stock_name = models.CharField(max_length=100)
+    time = models.CharField(max_length=5)
+    price = models.IntegerField()
