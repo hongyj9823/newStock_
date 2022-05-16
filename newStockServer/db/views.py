@@ -50,6 +50,8 @@ def getAnnualDatabaseJson(request, stock_name):
         single_data['name'] = Annual_data.stock_name
         single_data['date'] = Annual_data.date
         single_data['start'] = Annual_data.start_price
+        single_data['max'] = Annual_data.max_price
+        single_data['min'] = Annual_data.min_price
         single_data['end'] = Annual_data.end_price
         data.append(single_data)
     
