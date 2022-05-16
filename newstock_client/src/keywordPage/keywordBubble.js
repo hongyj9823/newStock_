@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import styled, {keyframes} from 'styled-components';
 
-export default function KeywordBubble ({data}){
+export default function KeywordBubble ({data, updater}){
     const blinking = keyframes`
         0% {
             opacity : 1;
@@ -32,7 +32,7 @@ export default function KeywordBubble ({data}){
         `;
 
     function getColor(importance) {
-        const max = 5000
+        const max = 10000
         const min = 1000
         let r
         if (importance > max) r = 255
@@ -44,14 +44,15 @@ export default function KeywordBubble ({data}){
         return "rgb(" + [r, g, b].join(",") + ")"
     }
 
+    function handleBubbleClick() {
+        updater(data)
+    }
+
     return (
         <div className="childComponent" data-html={true} data-tip={tip} data-for = "bubble"
-                style = {{backgroundColor : getColor(data.importance)}} >
-            <button style={{ backgroundColor : getColor(data.importance), border : 'none'}}>
-                <StyledLink to ={{pathname : `/topic/${data.keywords}`, state : {keyword : data.keywords}}}>
-                    {data.keyword}
-                </StyledLink>
-            </button>
+                style = {{backgroundColor : getColor(data.importance)}} 
+                onClick={handleBubbleClick}>
+            {data.keyword}
         </div>
     );
 }

@@ -1,6 +1,8 @@
 from NewsTab.KeywordGenerator import generateKeywords
 from NewsTab.SelectStock import getTopStocks
-from db.models import Keywords
+from StockTab.WebCrawler import getPriceOnly, getRateOnly
+from db.models import Keywords, Stocks, AnnualPrice, DailyPrice
+from datetime import datetime
 
 
 # Keywords DB
@@ -33,11 +35,14 @@ def updateKeywordsDB():
     print('Keyword Gen Finished (Update)')
 
 
-# TODO: Stocks DB
 def updateStocksDB():
     print('Updating Stocks DB')
-    pass
-
+    datas = Stocks.objects.values_list('stock_code')
+    for data in datas:
+        r = getRateOnly(data[0])
+        item = Stocks.objects.get(stock_code=data[0])
+        item.change_rate = r
+        item.save()
 
 # TODO: AnnualPrice DB
 def updateAnnualPriceDB():
@@ -45,8 +50,13 @@ def updateAnnualPriceDB():
     pass
 
 
-# TODO: Daily DB
 def updateDailyPriceDB():
     print('Updating Daily Price DB')
-    pass
+    datas = Stocks.objects.values_list('stock_name', 'stock_code')
+    now = datetime.now().strftime("%H%M")
+    if now >= "0900" and now <= "1500":
+        for data in datas:
+            p = getPriceOnly(data[1])
+            DailyPrice(stock_name=data[0], time=now, price=p).save()
+
 
