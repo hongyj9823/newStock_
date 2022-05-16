@@ -7,7 +7,7 @@
 2. .venv\scripts\activate
 
 3. cd newStockServer
-4. pip install --upgrade pip
+4. pip install --upgrade pip //엑세스 거부 시 python -m pip install --upgrade pip
 
 5. pip install -r requirements.txt
 6. deactivate
