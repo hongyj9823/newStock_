@@ -34,8 +34,8 @@ if 'runserver' in sys.argv:
 
     start = time.perf_counter()
 
-    initAll()
-    scheduleAll()
+    #initAll()
+    #scheduleAll()
     
     initTime = time.perf_counter() - start
     print(f'Total Initialization Time: {initTime}')
