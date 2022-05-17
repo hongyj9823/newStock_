@@ -25,9 +25,9 @@ export default function NewsOverlay({props, updater}) {
             <div onClick={handleOverlay} className="overlay"></div>
             <div className="modal-content">
                 <h1> {props.keyword} </h1>
-                <div> importance: {props.importance} </div>
-                <div> related stocks: {getStocks()} </div>
-                <ul> Summary
+                <div> 키워드와 연관된 주식 변동량: {props.importance} </div>
+                <div> 관련 주식: {getStocks()} </div>
+                <ul> 요약
                     {props.summary.map((item, index) => {
                         return <li key = {index}> {index}: {item} </li>
                     })}

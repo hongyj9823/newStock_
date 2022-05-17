@@ -5,6 +5,7 @@ import ReactTooltip from "react-tooltip";
 import Child from "./keywordBubble";
 import NewsOverlay from "./newsOverlay"
 
+import { useInterval } from '../Hooks/useInterval'
 import getKeywordDB from './keywordDBGetter'
 
 import "react-bubble-ui/dist/index.css";
@@ -41,9 +42,10 @@ export default function KeywordPanel() {
         ReactTooltip.rebuild()
     }, [keywords])
 
+    useInterval(loadData, 5000);
 
-
-    async function handleRefresh(e) {
+    async function loadData() {
+        console.log('loadData called!!')
         const newsList = await getKeywordDB()
         setKeywordsComponent(newsList)
     }
@@ -56,6 +58,7 @@ export default function KeywordPanel() {
 
 
 
+    loadData()
     const children = keywords.map((keyword, index) => {
         return (
             <Child data = {keyword} updater = {updateOverlay} className = "keywordBubble" key = {index} />
@@ -76,8 +79,6 @@ export default function KeywordPanel() {
             {children}
         </BubbleUI>
         <ReactTooltip className = "eachBub" id = "bubble" effect ="solid" data-delayHide="0"/>
-        <button onClick={handleRefresh}>Refresh</button>
-        
         {
             (Object.entries(overlay).length !== 0) ? 
             (<NewsOverlay props = {overlay} updater = {updateOverlay}/>) : (<></>)

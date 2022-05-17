@@ -23,9 +23,8 @@ export default function KeywordBubble ({data, updater}){
         }
     `;
     const tip = `
-        <h1> headline </h1>
-        <span> news summary related with ${data.keyword}</span>
-        <p> ${data.stocks} </p>
+        <h1> ${data.keyword} </h1>
+        <p> 관련주식: ${data.stocks} </p>
         <ul>
             <li> ${data.summary} </li>
         </ul>
