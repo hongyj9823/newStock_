@@ -13,7 +13,7 @@ def getKeywordDatabaseJson(request):
         single_data['keyword'] = keyword_data.keywords_text
         single_data['importance'] = keyword_data.importance
         single_data['stocks'] = keyword_data.related_stocks.split('/')
-        single_data['summary'] = keyword_data.summarized_text
+        single_data['summary'] = keyword_data.summarized_text.split('\\n')
         single_data['news'] = []
         if keyword_data.news_title_1 != None and keyword_data.news_url_1 != None:
             single_data['news'].append({'title' : keyword_data.news_title_1, 'url' : keyword_data.news_url_1})

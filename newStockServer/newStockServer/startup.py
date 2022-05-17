@@ -99,7 +99,7 @@ def initDailyPriceDB():
 
 
 def initAll():
-    init_funcs = [initKeywordsDB, initStockDB, initAnnualPriceDB, initDailyPriceDB]
+    init_funcs = [initKeywordsDB]#, initStockDB, initAnnualPriceDB, initDailyPriceDB]
 
     threads = [threading.Thread(target = func) for func in init_funcs]
     

@@ -34,7 +34,7 @@ if 'runserver' in sys.argv:
 
     start = time.perf_counter()
 
-    #initAll()
+    initAll()
     #scheduleAll()
     
     initTime = time.perf_counter() - start

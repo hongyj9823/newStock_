@@ -22,7 +22,7 @@ def summarize(title : str, content : str):
     response = requests.post(summarize.url, data=json.dumps(data), headers=summarize.headers)
     rescode = response.status_code
     if(rescode == 200):
-        return response.text[12:-2]
+        return response.text.replace('\\"', '"')[12:-2]
     else:
         print("Error : " + response.text)
         return None

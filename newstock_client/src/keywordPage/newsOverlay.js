@@ -27,7 +27,11 @@ export default function NewsOverlay({props, updater}) {
                 <h1> {props.keyword} </h1>
                 <div> importance: {props.importance} </div>
                 <div> related stocks: {getStocks()} </div>
-                <div> summary: {props.summary}</div>
+                <ul> Summary
+                    {props.summary.map((item, index) => {
+                        return <li key = {index}> {index}: {item} </li>
+                    })}
+                </ul>
                 {props.news.map((item, index) => {
                     return <ul key = {index}> News {index + 1}
                         <li key = {2*index}>{item.title}</li>
