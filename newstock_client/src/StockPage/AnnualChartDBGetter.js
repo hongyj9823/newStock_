@@ -7,6 +7,7 @@ import axios from 'axios';
 
 
 export default async function getannualChartDB(props) {
+    
 console.log(props.dataPointIndex);
   //정보를 obj에 name과 code로 담아옴
     const array=['삼성전자', ''];
@@ -14,7 +15,7 @@ console.log(props.dataPointIndex);
     let retData
     try {
         
-        retData = await axios.get("http://localhost:8000/db/${array[dataPointIndex]}");
+        retData = await axios.get("http://localhost:8000/db/stock=${array[dataPointIndex]}");
         retData = retData.data.data
         console.log(retData)
     } catch (error) {
