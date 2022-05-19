@@ -68,8 +68,6 @@ def initStockDB():
 
 def initAnnualPriceDB():
     print('Clearing Annual Price Database')
-    # 할지 안할지 생각해보기
-
     AnnualPrice.objects.all().delete()
 
     datas = Stocks.objects.values_list('stock_name', 'stock_code')

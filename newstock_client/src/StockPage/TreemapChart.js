@@ -1,13 +1,10 @@
-import React, { Component,useState, useLocation} from 'react';
+import React, {useState} from 'react';
 import ReactApexChart from "react-apexcharts";
-import {Route, Link ,} from "react-router-dom";
-import AnnualChart from './AnnualChart.js';
-import App from "../App"
 import { useNavigate } from "react-router-dom";
 
-function TreemapChart () {
+function TreemapChart (){
 
-  const navigate=useNavigate();
+const navigate=useNavigate();
 
 const [series, setSeries]=useState([{
   data: [
@@ -98,23 +95,14 @@ const [options, setOptions]=useState({
     show: false
   },
   chart: {
-    events:{ click(event, chartContext, config)
-      {
-       
-        navigate('/stock/annualchart',{
+    events:{ click(event, chartContext, config){
+          navigate('/stock/annualchart',{
           state:{
             dataPointIndex: config.dataPointIndex
           }
-
         });
-      }
-
-
+      }    
      }
-  },
-  title: {
-    // text: 'Distibuted Treemap (different color for each cell)',
-    // align: 'center'
   },
   colors: [
     '#3B93A5',
@@ -136,13 +124,12 @@ const [options, setOptions]=useState({
       enableShades: false
     }
   }})
-
-  return(
-  <ReactApexChart 
-  options={options} 
-  series={series} 
-  type="treemap" 
-  height = {600} />
-  );
+return(
+<ReactApexChart 
+options={options} 
+series={series} 
+type="treemap" 
+height = {600} />
+);
 }
 export default TreemapChart;
