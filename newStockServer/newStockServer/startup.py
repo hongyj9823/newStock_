@@ -70,6 +70,8 @@ def initAnnualPriceDB():
     print('Clearing Annual Price Database')
     # 할지 안할지 생각해보기
 
+    AnnualPrice.objects.all().delete()
+
     datas = Stocks.objects.values_list('stock_name', 'stock_code')
     today = datetime.today().strftime("%Y%m%d")
     lastyear = (datetime.today() - timedelta(365)).strftime("%Y%m%d")
