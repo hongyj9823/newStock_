@@ -34,12 +34,12 @@ export default function KeywordBubble ({data, updater}){
         const max = 10000
         const min = 1000
         let r
-        if (importance > max) r = 255
-        else if (importance < min) r = 0
-        else r = (importance - min) / (max - min) * 255
+        if (importance > max) r = 200
+        else if (importance < min) r = 100
+        else r = (importance - min) / (max - min) * 100 + 100
 
-        let b = 255 - r
-        let g = 0
+        let b = r
+        let g = r
         return "rgb(" + [r, g, b].join(",") + ")"
     }
 

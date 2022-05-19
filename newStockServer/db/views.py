@@ -6,7 +6,7 @@ from datetime import datetime
 
 # Create your views here.
 def getKeywordDatabaseJson(request):
-    keyword_datas = Keywords.objects.order_by('-importance')[:10]
+    keyword_datas = Keywords.objects.all()
     data = []
     for keyword_data in keyword_datas:
         single_data = {}

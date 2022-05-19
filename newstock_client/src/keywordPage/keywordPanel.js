@@ -33,19 +33,16 @@ export default function KeywordPanel() {
         gravitation : 5
     };
     
-
-
-    useEffect(() => {
-    }, [overlay])
-
     useEffect(() => {
         ReactTooltip.rebuild()
     }, [keywords])
 
-    useInterval(loadData, 5000);
+    useEffect(() => {
+    }, [overlay])
+
+    useInterval(loadData, 1000);
 
     async function loadData() {
-        console.log('loadData called!!')
         const newsList = await getKeywordDB()
         setKeywordsComponent(newsList)
     }
@@ -57,8 +54,6 @@ export default function KeywordPanel() {
     }
 
 
-
-    loadData()
     const children = keywords.map((keyword, index) => {
         return (
             <Child data = {keyword} updater = {updateOverlay} className = "keywordBubble" key = {index} />
