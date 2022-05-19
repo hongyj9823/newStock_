@@ -95,31 +95,8 @@ if (loading) {
         options={options} 
         series={[{
           name: 'candle',
-          data:
-          [
-          seriesArray[0],
-          seriesArray[1],
-          seriesArray[2],
-          seriesArray[3],
-          seriesArray[4],
-          seriesArray[5],
-          seriesArray[6],
-          seriesArray[7],
-          seriesArray[8],
-          seriesArray[9],
-          seriesArray[10],
-          seriesArray[11],
-          seriesArray[12],
-          seriesArray[13],
-          seriesArray[14],
-          seriesArray[16],
-          seriesArray[17],
-          seriesArray[18],
-          seriesArray[19],
-          seriesArray[20],
-          seriesArray[21],
-          ]
-        }]} 
+          data: seriesArray
+         }]} 
         type="candlestick" 
         height={700} />
     </div>
