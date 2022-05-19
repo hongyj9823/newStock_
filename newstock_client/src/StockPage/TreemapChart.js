@@ -95,12 +95,12 @@ const [options, setOptions]=useState({
     show: false
   },
   chart: {
-    events:{ click(event, chartContext, config){
-          navigate('/stock/annualchart',{
+    events:{ 
+      click(event, chartContext, config){
+        navigate('/stock/annualchart',{
           state:{
-            dataPointIndex: config.dataPointIndex
-          }
-        });
+            Index: config.dataPointIndex
+          }});
       }    
      }
   },
@@ -124,12 +124,13 @@ const [options, setOptions]=useState({
       enableShades: false
     }
   }})
-return(
-<ReactApexChart 
-options={options} 
-series={series} 
-type="treemap" 
-height = {600} />
-);
+
+  return(
+    <ReactApexChart 
+    options={options} 
+    series={series} 
+    type="treemap" 
+    height = {600} />
+  );
 }
 export default TreemapChart;

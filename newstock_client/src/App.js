@@ -3,7 +3,7 @@ import HeadLogo from './components/HeadLogo.js';
 import KeywordPanel from './keywordPage/keywordPanel.js';
 import TreemapChart from './StockPage/TreemapChart.js';
 import AnnualChart from './StockPage/AnnualChart.js';
-import AnnualNews from './StockPage/AnnualNewsOverlay.js';
+import AnnualNews from './StockPage/AnnualNews.js';
 import Footer from './components/Footer.js';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';

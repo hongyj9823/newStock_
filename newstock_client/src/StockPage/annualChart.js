@@ -1,13 +1,15 @@
 import React, {  useState, useEffect } from 'react';
 import ApexCharts from 'react-apexcharts'
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 
 function AnnualChart(props){
 
 const location =useLocation();
 //console.log('state', location.state);
-const {dataPointIndex}= location.state;
+const {Index}= location.state;
+
+const navigate=useNavigate();
 
 const array=[
   '삼성전자', 'LG에너지솔루션', 'NAVER', '카카오', 'KB금융', 'SK', 'LG화학', 'SK이노베이션', '현대차', '기아',
@@ -24,16 +26,21 @@ const [options, setOptions]=useState({
     height: 350,
     type: 'candlestick',
     events:{
-        click(event, chartContext, config, params) {
        //날짜 클릭 시 해당 뉴스 오버레이로 띄우기
-       // console.log("annualChart");  
-
-       // window.location.replace('http://localhost:3000/stock/annualchart/pastnews');
-        } 
+       click(event, chartContext, config){
+        console.log(config.config)
+        //console.log(config.config.series[0].data[dataPointIndex].x)
+        navigate('/stock/annualchart/pastnews',{
+          state:{
+            stockName: array[Index], //주식 이름
+            stockDate: config.config.series[0].data[Index].x//주식 날짜
+          }});
+      }    
+        
     }
  },
  title: {
-   text: 'Annual Chart ' + array[dataPointIndex],
+   text: 'Annual Chart ' + array[Index],
    align: 'left'
  },
  tooltip: {
@@ -59,7 +66,7 @@ const [series, setSeries]=useState([{
 useEffect(() => {   
   const fetchData = async () => {
   setLoading(true);
-  const url="http://localhost:8000/db/annual/stock="+array[dataPointIndex];
+  const url="http://localhost:8000/db/annual/stock="+array[Index];
   try {
     const response = await axios.get( url );
     const seriesArray = response.data.data.map((item, idx) => {
@@ -77,45 +84,45 @@ useEffect(() => {
 };
 fetchData();
 }, []);
-//console.log(seriesArray)
+
 //대기 중일 때
 if (loading) {
   return <p>Loading...</p>;
 }
-return (
-<div id="chart">
-<ApexCharts 
-options={options} 
-series={[{
-  name: 'candle',
-  data:
-  [
-  seriesArray[0],
-  seriesArray[1],
-  seriesArray[2],
-  seriesArray[3],
-  seriesArray[4],
-  seriesArray[5],
-  seriesArray[6],
-  seriesArray[7],
-  seriesArray[8],
-  seriesArray[9],
-  seriesArray[10],
-  seriesArray[11],
-  seriesArray[12],
-  seriesArray[13],
-  seriesArray[14],
-  seriesArray[16],
-  seriesArray[17],
-  seriesArray[18],
-  seriesArray[19],
-  seriesArray[20],
-  seriesArray[21],
-  ]
-}]} 
-type="candlestick" 
-height={700} />
-</div>
-) 
+  return (
+    <div id="chart">
+      <ApexCharts 
+        options={options} 
+        series={[{
+          name: 'candle',
+          data:
+          [
+          seriesArray[0],
+          seriesArray[1],
+          seriesArray[2],
+          seriesArray[3],
+          seriesArray[4],
+          seriesArray[5],
+          seriesArray[6],
+          seriesArray[7],
+          seriesArray[8],
+          seriesArray[9],
+          seriesArray[10],
+          seriesArray[11],
+          seriesArray[12],
+          seriesArray[13],
+          seriesArray[14],
+          seriesArray[16],
+          seriesArray[17],
+          seriesArray[18],
+          seriesArray[19],
+          seriesArray[20],
+          seriesArray[21],
+          ]
+        }]} 
+        type="candlestick" 
+        height={700} />
+    </div>
+  ) 
 }
 export default AnnualChart;
