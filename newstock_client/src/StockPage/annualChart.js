@@ -11,7 +11,6 @@ const {Index}= location.state;
 const [loading, setLoading]=useState(false);
 const [loading2, setLoading2]=useState(false);
 
-
 const [stockName, setstockName] = useState();
 const [stockDate, setstockDate] = useState();
 
@@ -77,54 +76,21 @@ useEffect(() => {
   setLoading2(false);
 };
 fetchData2();
-
 },[stockDate]);//stockDate2가 갱신될때마다 실행
-
-//console.log(seriesArray2);
 
 const [options, setOptions]=useState({
   chart: {
     height: 350,
     type: 'candlestick',
-    events:{      
-     }
  },
  title: {
-   text: 'Annual Chart ' + array[Index],
-   align: 'left'
- },
- tooltip: {
-  custom: function({series, seriesIndex, dataPointIndex, w}) {
-    
-    const stockName=(array[Index]);
-    const stockDate=w.config.series[0].data[dataPointIndex].x;
-    setstockName(array[Index])
-    setstockDate(w.config.series[0].data[dataPointIndex].x);
-
-    console.log(array[Index]);
-    console.log(w.config.series[0].data[dataPointIndex].x);
-    console.log(seriesArray2);
-
-        return '<ul>' +
-        '<li><b>STOCK</b>: ' + stockName + '</li>' +
-        '<li><b>DATE</b>: ' + stockDate + '</li>' +
-        // '<li><b>TITLE</b>: \'' + seriesArray2[0].title + '\'</li>' +
-        // '<li><b>URL</b>: \'' + seriesArray2.url + '\'</li>' +
-        '</ul>';
-  }
- },
- xaxis: {
-   type: 'datetime',
-   tooltip: {
-    enabled: false
-  }
- },
- yaxis: {
-   tooltip: {
-     enabled: true
-   }
- }
-  })
+  text: 'Annual Chart ' + array[Index],
+  align: 'left'
+},
+tooltip: {},
+xaxis:{},
+yaxis: {}
+})
 
 const [series, setSeries]=useState([{
     name: 'candle',
@@ -132,9 +98,9 @@ const [series, setSeries]=useState([{
     []}])
 
 
-//console.log(stockName);
-//console.log(stockDate);
-//console.log(modalIsOpen)
+console.log(stockName);
+console.log(stockDate);
+console.log(seriesArray2)
 //대기 중일 때
 if (loading) {
   return  <p>Loading...</p>;;
@@ -142,7 +108,52 @@ if (loading) {
   return (
     <div id="chart">
       <ApexCharts 
-        options={options} 
+        options={{
+          chart: {
+            height: 350,
+            type: 'candlestick',
+         },
+         title: {
+           text: 'Annual Chart ' + array[Index],
+           align: 'left'
+         },
+         tooltip: {
+          custom: function({series, seriesIndex, dataPointIndex, w}) {
+            
+            const stockName=(array[Index]);
+            const stockDate=w.config.series[0].data[dataPointIndex].x;
+            setstockName(array[Index])
+            setstockDate(w.config.series[0].data[dataPointIndex].x);
+
+            
+    setSeriesArray2(seriesArray2); 
+           
+            //const seriesArray3=fetchData2.bind(seriesArray2);
+            
+            //console.log(array[Index]);
+            //console.log(w.config.series[0].data[dataPointIndex].x);
+            
+            console.log(seriesArray2[0]);
+                 return '<ul>' +
+                 '<li><b>STOCK</b>: ' + stockName + '</li>' +
+                  '<li><b>DATE</b>: ' + stockDate + '</li>' +
+                  //'<li><b>TITLE</b>: \'' + seriesArray2[0].title + '\'</li>' +
+                 //'<li><b>URL</b>: \'' + seriesArray2[0].url + '\'</li>' +
+                 '</ul>';
+          }
+         },
+         xaxis: {
+           type: 'datetime',
+           tooltip: {
+            enabled: false
+          }
+         },
+         yaxis: {
+           tooltip: {
+             enabled: true
+           }
+         }
+          }} 
         series={[{
           name: 'candle',
           data: seriesArray
