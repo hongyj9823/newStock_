@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import ReactApexChart from "react-apexcharts";
 import { useNavigate } from "react-router-dom";
 
+
 function TreemapChart (){
 
 const navigate=useNavigate();
@@ -95,13 +96,15 @@ const [options, setOptions]=useState({
     show: false
   },
   chart: {
-    events:{ 
+    events:{
+
+    
       click(event, chartContext, config){
         navigate('/stock/annualchart',{
           state:{
             Index: config.dataPointIndex
           }});
-      }    
+        }
      }
   },
   colors: [
@@ -126,10 +129,10 @@ const [options, setOptions]=useState({
   }})
 
   return(
-    <ReactApexChart 
-    options={options} 
-    series={series} 
-    type="treemap" 
+    <ReactApexChart
+    options={options}
+    series={series}
+    type="treemap"
     height = {600} />
   );
 }

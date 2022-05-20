@@ -1,16 +1,23 @@
 import React, {  useState, useEffect } from 'react';
 import ApexCharts from 'react-apexcharts'
 import { useNavigate, useLocation } from "react-router-dom";
+import AnnualNews from './AnnualNews.js';
 import axios from 'axios';
 
 function AnnualChart(props){
 
 const location =useLocation();
-//console.log('state', location.state);
 const {Index}= location.state;
+const [loading, setLoading]=useState(false);
+const [loading2, setLoading2]=useState(false);
 
-const navigate=useNavigate();
 
+const [stockName, setstockName] = useState();
+const [stockDate, setstockDate] = useState();
+
+
+//const navigate=useNavigate(); 
+ 
 const array=[
   '삼성전자', 'LG에너지솔루션', 'NAVER', '카카오', 'KB금융', 'SK', 'LG화학', 'SK이노베이션', '현대차', '기아',
             '삼성바이오로직스', '셀트리온', 'HMM', '대한항공', '삼성생명', '삼성화재', '두산에너빌리티', '한온시스템', '삼성물산', '이마트',
@@ -20,53 +27,11 @@ const array=[
             '지씨셀', 'HLB생명과학', '카카오게임즈', '펄어비스', '안랩', '디어유', '오스템임플란트', '파크시스템스', '하림지주', '매일유업'
 ]
 const [seriesArray, setSeriesArray] = useState({});
-const [loading, setLoading]=useState(false);
-const [options, setOptions]=useState({
-  chart: {
-    height: 350,
-    type: 'candlestick',
-    events:{
-       //날짜 클릭 시 해당 뉴스 오버레이로 띄우기
-       click(event, chartContext, config){
-        console.log(config.config)
-        //console.log(config.config.series[0].data[dataPointIndex].x)
-        navigate('/stock/annualchart/pastnews',{
-          state:{
-            stockName: array[Index], //주식 이름
-            stockDate: config.config.series[0].data[Index].x//주식 날짜
-          }});
-      }    
-        
-    }
- },
- title: {
-   text: 'Annual Chart ' + array[Index],
-   align: 'left'
- },
- tooltip: {
-   enabled: true,
- },
- xaxis: {
-   type: 'datetime',
-   tooltip: {
-    enabled: false
-  }
- },
- yaxis: {
-   tooltip: {
-     enabled: true
-   }
- }
-  })
-const [series, setSeries]=useState([{
-    name: 'candle',
-    data:
-    []}])
-//console.log(seriesArray[0]);
 useEffect(() => {   
   const fetchData = async () => {
   setLoading(true);
   const url="http://localhost:8000/db/annual/stock="+array[Index];
+  console.log(url);
   try {
     const response = await axios.get( url );
     const seriesArray = response.data.data.map((item, idx) => {
@@ -83,11 +48,96 @@ useEffect(() => {
   setLoading(false);
 };
 fetchData();
-}, []);
+},[]);
 
+const [seriesArray2, setSeriesArray2] = useState({
+  title : 'title',
+  url : 'url'
+});
+//과거뉴스 불러옴
+useEffect(() => {   
+  const fetchData2 = async () => {
+  setLoading2(true);
+ const url2="http://localhost:8000/db/pastNews/query="+stockName+'&date='+stockDate.split('-').join('').substr(2,7);
+  console.log(url2);
+  try {
+    const response2 = await axios.get( url2 );
+    const seriesArray2 = response2.data.data.map((item, idx) => {
+      return {
+        title: item.title,
+        url: item.url
+      };                  
+    });
+    setSeriesArray2(seriesArray2); 
+    //console.log(seriesArray2);
+  } 
+  catch (e) {
+    console.log(e);
+  }
+  setLoading2(false);
+};
+fetchData2();
+
+},[stockDate]);//stockDate2가 갱신될때마다 실행
+
+//console.log(seriesArray2);
+
+const [options, setOptions]=useState({
+  chart: {
+    height: 350,
+    type: 'candlestick',
+    events:{      
+     }
+ },
+ title: {
+   text: 'Annual Chart ' + array[Index],
+   align: 'left'
+ },
+ tooltip: {
+  custom: function({series, seriesIndex, dataPointIndex, w}) {
+    
+    const stockName=(array[Index]);
+    const stockDate=w.config.series[0].data[dataPointIndex].x;
+    setstockName(array[Index])
+    setstockDate(w.config.series[0].data[dataPointIndex].x);
+
+    console.log(array[Index]);
+    console.log(w.config.series[0].data[dataPointIndex].x);
+    console.log(seriesArray2);
+
+        return '<ul>' +
+        '<li><b>STOCK</b>: ' + stockName + '</li>' +
+        '<li><b>DATE</b>: ' + stockDate + '</li>' +
+        // '<li><b>TITLE</b>: \'' + seriesArray2[0].title + '\'</li>' +
+        // '<li><b>URL</b>: \'' + seriesArray2.url + '\'</li>' +
+        '</ul>';
+  }
+ },
+ xaxis: {
+   type: 'datetime',
+   tooltip: {
+    enabled: false
+  }
+ },
+ yaxis: {
+   tooltip: {
+     enabled: true
+   }
+ }
+  })
+
+const [series, setSeries]=useState([{
+    name: 'candle',
+    data:
+    []}])
+
+
+//console.log(stockName);
+//console.log(stockDate);
+//console.log(modalIsOpen)
 //대기 중일 때
 if (loading) {
-  return <p>Loading...</p>;
+  return  <p>Loading...</p>;;
 }
   return (
     <div id="chart">
@@ -99,6 +149,7 @@ if (loading) {
          }]} 
         type="candlestick" 
         height={700} />
+        
     </div>
   ) 
 }
