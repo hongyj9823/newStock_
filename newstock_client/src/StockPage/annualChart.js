@@ -3,6 +3,9 @@ import ApexCharts from 'react-apexcharts'
 import { useNavigate, useLocation } from "react-router-dom";
 import AnnualNews from './AnnualNews.js';
 import axios from 'axios';
+import Modal from 'react-modal'
+
+
 
 function AnnualChart(props){
 
@@ -10,10 +13,29 @@ const location =useLocation();
 const {Index}= location.state;
 const [loading, setLoading]=useState(false);
 const [loading2, setLoading2]=useState(false);
-
+const [modalIsOpen, setModalIsOpen] = useState(false);
 const [stockName, setstockName] = useState();
 const [stockDate, setstockDate] = useState();
+   //         const stockName=(array[Index]);
+    //         const stockDate=w.config.series[0].data[dataPointIndex].x;
+    //         setstockName(array[Index])
+    //         setstockDate(w.config.series[0].data[dataPointIndex].x);
 
+            
+    // setSeriesArray2(seriesArray2); 
+           
+    //         //const seriesArray3=fetchData2.bind(seriesArray2);
+            
+    //         //console.log(array[Index]);
+    //         //console.log(w.config.series[0].data[dataPointIndex].x);
+            
+    //         console.log(seriesArray2[0]);
+    //              return '<ul>' +
+    //              '<li><b>STOCK</b>: ' + stockName + '</li>' +
+    //               '<li><b>DATE</b>: ' + stockDate + '</li>' +
+    //               //'<li><b>TITLE</b>: \'' + seriesArray2[0].title + '\'</li>' +
+    //              //'<li><b>URL</b>: \'' + seriesArray2[0].url + '\'</li>' +
+    //              '</ul>';
 
 //const navigate=useNavigate(); 
  
@@ -50,8 +72,7 @@ fetchData();
 },[]);
 
 const [seriesArray2, setSeriesArray2] = useState({
-  title : 'title',
-  url : 'url'
+
 });
 //과거뉴스 불러옴
 useEffect(() => {   
@@ -68,13 +89,15 @@ useEffect(() => {
       };                  
     });
     setSeriesArray2(seriesArray2); 
-    //console.log(seriesArray2);
+    
   } 
   catch (e) {
     console.log(e);
   }
   setLoading2(false);
 };
+
+console.log(seriesArray2);
 fetchData2();
 },[stockDate]);//stockDate2가 갱신될때마다 실행
 
@@ -82,7 +105,9 @@ const [options, setOptions]=useState({
   chart: {
     height: 350,
     type: 'candlestick',
+   
  },
+
  title: {
   text: 'Annual Chart ' + array[Index],
   align: 'left'
@@ -98,12 +123,16 @@ const [series, setSeries]=useState([{
     []}])
 
 
-console.log(stockName);
-console.log(stockDate);
-console.log(seriesArray2)
+// console.log(stockName);
+// console.log(stockDate);
+// console.log(seriesArray2)
 //대기 중일 때
+
 if (loading) {
-  return  <p>Loading...</p>;;
+  return  <p>Loading...</p>;
+}
+if (loading2) {
+  return  <p>Loading...</p>;
 }
   return (
     <div id="chart">
@@ -112,40 +141,36 @@ if (loading) {
           chart: {
             height: 350,
             type: 'candlestick',
+            events:{
+              click: function(event, chartContext, config) {
+                setModalIsOpen(true);
+                console.log(event);
+                console.log(config);
+                console.log(modalIsOpen);
+              const stockName=(array[Index]);
+              const dataPointIndex2= config.dataPointIndex;
+            const stockDate=config.config.series[0].data[config.dataPointIndex].x;
+            console.log(stockDate);
+            console.log(stockName);
+            console.log(config.dataPointIndex);
+            setstockName(array[Index])
+            setstockDate(config.config.series[0].data[config.dataPointIndex].x);
+                //doubleclick 
+                //if (event.detail === 2) console.log('doubleclick');
+              }
+              },
          },
          title: {
            text: 'Annual Chart ' + array[Index],
            align: 'left'
          },
          tooltip: {
-          custom: function({series, seriesIndex, dataPointIndex, w}) {
-            
-            const stockName=(array[Index]);
-            const stockDate=w.config.series[0].data[dataPointIndex].x;
-            setstockName(array[Index])
-            setstockDate(w.config.series[0].data[dataPointIndex].x);
-
-            
-    setSeriesArray2(seriesArray2); 
-           
-            //const seriesArray3=fetchData2.bind(seriesArray2);
-            
-            //console.log(array[Index]);
-            //console.log(w.config.series[0].data[dataPointIndex].x);
-            
-            console.log(seriesArray2[0]);
-                 return '<ul>' +
-                 '<li><b>STOCK</b>: ' + stockName + '</li>' +
-                  '<li><b>DATE</b>: ' + stockDate + '</li>' +
-                  //'<li><b>TITLE</b>: \'' + seriesArray2[0].title + '\'</li>' +
-                 //'<li><b>URL</b>: \'' + seriesArray2[0].url + '\'</li>' +
-                 '</ul>';
-          }
-         },
+          enabled: true,
+        },
          xaxis: {
            type: 'datetime',
            tooltip: {
-            enabled: false
+            enabled: true
           }
          },
          yaxis: {
@@ -160,7 +185,17 @@ if (loading) {
          }]} 
         type="candlestick" 
         height={700} />
-        
+
+
+         <div>
+               <Modal isOpen={modalIsOpen}>
+       ' This is Modal content+<span>{stockName}</span>+<span>{stockDate}</span>
+        {/* <p>{seriesArray2[0].title}</p> */}
+        <button onClick={()=> setModalIsOpen(false)}>CLOSE</button>
+      </Modal>
+      </div>
+
+
     </div>
   ) 
 }
