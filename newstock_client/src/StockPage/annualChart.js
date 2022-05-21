@@ -69,7 +69,7 @@ useEffect(() => {
   setLoading(false);
 };
 fetchData();
-},[]);
+},[Index]);
 
 const [seriesArray2, setSeriesArray2] = useState({
 
@@ -189,8 +189,34 @@ if (loading2) {
 
          <div>
                <Modal isOpen={modalIsOpen}>
-       ' This is Modal content+<span>{stockName}</span>+<span>{stockDate}</span>
-        {/* <p>{seriesArray2[0].title}</p> */}
+               <h2><b>STOCK</b>: {stockName} </h2>
+         <b>DATE</b>:{stockDate} 
+       <ul> 
+         
+          <li>TITLE 1 : {seriesArray2[0].title} </li>
+          <li>URL 1 : {seriesArray2[0].url} </li>
+          <li>TITLE 2 : {seriesArray2[1].title} </li>
+          <li>URL 2 : {seriesArray2[1].url} </li>
+          <li>TITLE 3 : {seriesArray2[2].title} </li>
+          <li>URL 3 : {seriesArray2[2].url} </li>
+          <li>TITLE 4 : {seriesArray2[3].title} </li>
+          <li>URL 4 : {seriesArray2[3].url} </li>
+          <li>TITLE 5 : {seriesArray2[4].title} </li>
+          <li>URL 5 : {seriesArray2[4].url} </li>
+          <li>TITLE 6 : {seriesArray2[5].title} </li>
+          <li>URL 6 : {seriesArray2[5].url} </li>
+          <li>TITLE 7 : {seriesArray2[6].title} </li>
+          <li>URL 7 : {seriesArray2[6].url} </li>
+          <li>TITLE 8 : {seriesArray2[7].title} </li>
+          <li>URL 8 : {seriesArray2[7].url} </li>
+          <li>TITLE 9 : {seriesArray2[8].title} </li>
+          <li>URL 9 : {seriesArray2[8].url} </li>
+          <li>TITLE 10 : {seriesArray2[9].title} </li>
+          <li>URL 10 : {seriesArray2[9].url} </li>
+
+
+      </ul>
+       
         <button onClick={()=> setModalIsOpen(false)}>CLOSE</button>
       </Modal>
       </div>
