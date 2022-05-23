@@ -39,6 +39,17 @@ def getStockDatabaseJson(request):
     
     return JsonResponse({'data': data}, json_dumps_params={'ensure_ascii':False})
 
+# def getStockDatabaseJson(request):
+#     stock_datas = Stocks.objects.all().order_by('-market_cap')
+#     data = []
+#     for stock_data in stock_datas:
+#         single_data = {}
+#         single_data['name'] = stock_data.stock_name
+#         single_data['price'] = stock_data.market_cap
+#         single_data['rate'] = stock_data.change_rate
+#         data.append(single_data)
+    
+#     return JsonResponse({'data': data}, json_dumps_params={'ensure_ascii':False})
 
 
 def getAnnualDatabaseJson(request, stock_name):
