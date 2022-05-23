@@ -1,320 +1,228 @@
-import React, { Component } from 'react';
-import dayjs from "dayjs";
+import React, {  useState, useEffect } from 'react';
 import ApexCharts from 'react-apexcharts'
-  
-export default class annualChart extends Component {
-  constructor(props) {
-    super(props);
+import { useNavigate, useLocation } from "react-router-dom";
 
-    this.state = {
+import axios from 'axios';
+import Modal from 'react-modal'
+
+
+
+function AnnualChart(props){
+
+const location =useLocation();
+const {Index}= location.state;
+const [loading, setLoading]=useState(false);
+const [loading2, setLoading2]=useState(false);
+const [modalIsOpen, setModalIsOpen] = useState(false);
+const [stockName, setstockName] = useState();
+const [stockDate, setstockDate] = useState();
+   //         const stockName=(array[Index]);
+    //         const stockDate=w.config.series[0].data[dataPointIndex].x;
+    //         setstockName(array[Index])
+    //         setstockDate(w.config.series[0].data[dataPointIndex].x);
+
+            
+    // setSeriesArray2(seriesArray2); 
+           
+    //         //const seriesArray3=fetchData2.bind(seriesArray2);
+            
+    //         //console.log(array[Index]);
+    //         //console.log(w.config.series[0].data[dataPointIndex].x);
+            
+    //         console.log(seriesArray2[0]);
+    //              return '<ul>' +
+    //              '<li><b>STOCK</b>: ' + stockName + '</li>' +
+    //               '<li><b>DATE</b>: ' + stockDate + '</li>' +
+    //               //'<li><b>TITLE</b>: \'' + seriesArray2[0].title + '\'</li>' +
+    //              //'<li><b>URL</b>: \'' + seriesArray2[0].url + '\'</li>' +
+    //              '</ul>';
+
+//const navigate=useNavigate(); 
+ 
+const array=[
+  '삼성전자', 'LG에너지솔루션', 'NAVER', '카카오', 'KB금융', 'SK', 'LG화학', 'SK이노베이션', '현대차', '기아',
+            '삼성바이오로직스', '셀트리온', 'HMM', '대한항공', '삼성생명', '삼성화재', '두산에너빌리티', '한온시스템', '삼성물산', '이마트',
+            'POSCO홀딩스', '고려아연', '리노공업', '동진쎄미켐', '셀트리온제약', '씨젠', 'CJ제일제당', '오리온', '미래에셋증권', '메리츠증권',
+            '에코프로비엠', '에코프로', '셀트리온헬스케어', 'CJ프레시웨이', '에스에프에이', '고영', '알테오젠', '레고켐바이오', '엘앤에프', '대주전자재료',
+            '천보', '솔브레인', '포스코케미칼', '쌍용C&E', '현대건설', 'GS건설', '스튜디오드래곤', 'JYP Ent.', '케이엠더블유', '서진시스템',
+            '지씨셀', 'HLB생명과학', '카카오게임즈', '펄어비스', '안랩', '디어유', '오스템임플란트', '파크시스템스', '하림지주', '매일유업'
+]
+const [seriesArray, setSeriesArray] = useState({});
+useEffect(() => {   
+  const fetchData = async () => {
+  setLoading(true);
+  const url="http://localhost:8000/db/annual/stock="+array[Index];
+  console.log(url);
+  try {
+    const response = await axios.get( url );
+    const seriesArray = response.data.data.map((item, idx) => {
+      return {
+        x: item.date.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3'),
+        y: [ parseFloat(item.start), parseFloat(item.max), parseFloat(item.min), parseFloat(item.end)]
+      };                  
+    });
+    setSeriesArray(seriesArray); 
+  } 
+  catch (e) {
+    console.log(e);
+  }
+  setLoading(false);
+};
+fetchData();
+},[Index]);
+
+const [seriesArray2, setSeriesArray2] = useState({
+
+});
+//과거뉴스 불러옴
+useEffect(() => {   
+  const fetchData2 = async () => {
+  setLoading2(true);
+ const url2="http://localhost:8000/db/pastNews/query="+stockName+'&date='+stockDate.split('-').join('').substr(2,7);
+  console.log(url2);
+  try {
+    const response2 = await axios.get( url2 );
+    const seriesArray2 = response2.data.data.map((item, idx) => {
+      return {
+        title: item.title,
+        url: item.url
+      };                  
+    });
+    setSeriesArray2(seriesArray2); 
     
-      series: [{
-        name: 'candle',
-        data: [
-          {
-            x: new Date(1538778600000),
-            y: [6629.81, 6650.5, 6623.04, 6633.33]
-          },
-          {
-            x: new Date(1538780400000),
-            y: [6632.01, 6643.59, 6620, 6630.11]
-          },
-          {
-            x: new Date(1538782200000),
-            y: [6630.71, 6648.95, 6623.34, 6635.65]
-          },
-          {
-            x: new Date(1538784000000),
-            y: [6635.65, 6651, 6629.67, 6638.24]
-          },
-          {
-            x: new Date(1538785800000),
-            y: [6638.24, 6640, 6620, 6624.47]
-          },
-          {
-            x: new Date(1538787600000),
-            y: [6624.53, 6636.03, 6621.68, 6624.31]
-          },
-          {
-            x: new Date(1538789400000),
-            y: [6624.61, 6632.2, 6617, 6626.02]
-          },
-          {
-            x: new Date(1538791200000),
-            y: [6627, 6627.62, 6584.22, 6603.02]
-          },
-          {
-            x: new Date(1538793000000),
-            y: [6605, 6608.03, 6598.95, 6604.01]
-          },
-          {
-            x: new Date(1538794800000),
-            y: [6604.5, 6614.4, 6602.26, 6608.02]
-          },
-          {
-            x: new Date(1538796600000),
-            y: [6608.02, 6610.68, 6601.99, 6608.91]
-          },
-          {
-            x: new Date(1538798400000),
-            y: [6608.91, 6618.99, 6608.01, 6612]
-          },
-          {
-            x: new Date(1538800200000),
-            y: [6612, 6615.13, 6605.09, 6612]
-          },
-          {
-            x: new Date(1538802000000),
-            y: [6612, 6624.12, 6608.43, 6622.95]
-          },
-          {
-            x: new Date(1538803800000),
-            y: [6623.91, 6623.91, 6615, 6615.67]
-          },
-          {
-            x: new Date(1538805600000),
-            y: [6618.69, 6618.74, 6610, 6610.4]
-          },
-          {
-            x: new Date(1538807400000),
-            y: [6611, 6622.78, 6610.4, 6614.9]
-          },
-          {
-            x: new Date(1538809200000),
-            y: [6614.9, 6626.2, 6613.33, 6623.45]
-          },
-          {
-            x: new Date(1538811000000),
-            y: [6623.48, 6627, 6618.38, 6620.35]
-          },
-          {
-            x: new Date(1538812800000),
-            y: [6619.43, 6620.35, 6610.05, 6615.53]
-          },
-          {
-            x: new Date(1538814600000),
-            y: [6615.53, 6617.93, 6610, 6615.19]
-          },
-          {
-            x: new Date(1538816400000),
-            y: [6615.19, 6621.6, 6608.2, 6620]
-          },
-          {
-            x: new Date(1538818200000),
-            y: [6619.54, 6625.17, 6614.15, 6620]
-          },
-          {
-            x: new Date(1538820000000),
-            y: [6620.33, 6634.15, 6617.24, 6624.61]
-          },
-          {
-            x: new Date(1538821800000),
-            y: [6625.95, 6626, 6611.66, 6617.58]
-          },
-          {
-            x: new Date(1538823600000),
-            y: [6619, 6625.97, 6595.27, 6598.86]
-          },
-          {
-            x: new Date(1538825400000),
-            y: [6598.86, 6598.88, 6570, 6587.16]
-          },
-          {
-            x: new Date(1538827200000),
-            y: [6588.86, 6600, 6580, 6593.4]
-          },
-          {
-            x: new Date(1538829000000),
-            y: [6593.99, 6598.89, 6585, 6587.81]
-          },
-          {
-            x: new Date(1538830800000),
-            y: [6587.81, 6592.73, 6567.14, 6578]
-          },
-          {
-            x: new Date(1538832600000),
-            y: [6578.35, 6581.72, 6567.39, 6579]
-          },
-          {
-            x: new Date(1538834400000),
-            y: [6579.38, 6580.92, 6566.77, 6575.96]
-          },
-          {
-            x: new Date(1538836200000),
-            y: [6575.96, 6589, 6571.77, 6588.92]
-          },
-          {
-            x: new Date(1538838000000),
-            y: [6588.92, 6594, 6577.55, 6589.22]
-          },
-          {
-            x: new Date(1538839800000),
-            y: [6589.3, 6598.89, 6589.1, 6596.08]
-          },
-          {
-            x: new Date(1538841600000),
-            y: [6597.5, 6600, 6588.39, 6596.25]
-          },
-          {
-            x: new Date(1538843400000),
-            y: [6598.03, 6600, 6588.73, 6595.97]
-          },
-          {
-            x: new Date(1538845200000),
-            y: [6595.97, 6602.01, 6588.17, 6602]
-          },
-          {
-            x: new Date(1538847000000),
-            y: [6602, 6607, 6596.51, 6599.95]
-          },
-          {
-            x: new Date(1538848800000),
-            y: [6600.63, 6601.21, 6590.39, 6591.02]
-          },
-          {
-            x: new Date(1538850600000),
-            y: [6591.02, 6603.08, 6591, 6591]
-          },
-          {
-            x: new Date(1538852400000),
-            y: [6591, 6601.32, 6585, 6592]
-          },
-          {
-            x: new Date(1538854200000),
-            y: [6593.13, 6596.01, 6590, 6593.34]
-          },
-          {
-            x: new Date(1538856000000),
-            y: [6593.34, 6604.76, 6582.63, 6593.86]
-          },
-          {
-            x: new Date(1538857800000),
-            y: [6593.86, 6604.28, 6586.57, 6600.01]
-          },
-          {
-            x: new Date(1538859600000),
-            y: [6601.81, 6603.21, 6592.78, 6596.25]
-          },
-          {
-            x: new Date(1538861400000),
-            y: [6596.25, 6604.2, 6590, 6602.99]
-          },
-          {
-            x: new Date(1538863200000),
-            y: [6602.99, 6606, 6584.99, 6587.81]
-          },
-          {
-            x: new Date(1538865000000),
-            y: [6587.81, 6595, 6583.27, 6591.96]
-          },
-          {
-            x: new Date(1538866800000),
-            y: [6591.97, 6596.07, 6585, 6588.39]
-          },
-          {
-            x: new Date(1538868600000),
-            y: [6587.6, 6598.21, 6587.6, 6594.27]
-          },
-          {
-            x: new Date(1538870400000),
-            y: [6596.44, 6601, 6590, 6596.55]
-          },
-          {
-            x: new Date(1538872200000),
-            y: [6598.91, 6605, 6596.61, 6600.02]
-          },
-          {
-            x: new Date(1538874000000),
-            y: [6600.55, 6605, 6589.14, 6593.01]
-          },
-          {
-            x: new Date(1538875800000),
-            y: [6593.15, 6605, 6592, 6603.06]
-          },
-          {
-            x: new Date(1538877600000),
-            y: [6603.07, 6604.5, 6599.09, 6603.89]
-          },
-          {
-            x: new Date(1538879400000),
-            y: [6604.44, 6604.44, 6600, 6603.5]
-          },
-          {
-            x: new Date(1538881200000),
-            y: [6603.5, 6603.99, 6597.5, 6603.86]
-          },
-          {
-            x: new Date(1538883000000),
-            y: [6603.85, 6605, 6600, 6604.07]
-          },
-          {
-            x: new Date(1538884800000),
-            y: [6604.98, 6606, 6604.07, 6606]
-          },
-        ]
-      }],
-      options: {
-        chart: {
-          height: 350,
-          type: 'candlestick',
-        },
-        title: {
-          text: 'CandleStick Chart - Category X-axis',
-          align: 'left'
-        },
-        annotations: {
-          xaxis: [
-            {
-              x: 'Oct 06 14:00',
-              borderColor: '#00E396',
-              label: {
-                borderColor: '#00E396',
-                style: {
-                  fontSize: '12px',
-                  color: '#fff',
-                  background: '#00E396'
-                },
-                orientation: 'horizontal',
-                offsetY: 7,
-                text: 'Annotation Test'
+  } 
+  catch (e) {
+    console.log(e);
+  }
+  setLoading2(false);
+};
+
+console.log(seriesArray2);
+fetchData2();
+},[stockDate]);//stockDate2가 갱신될때마다 실행
+
+const [options, setOptions]=useState({
+  chart: {
+    height: 350,
+    type: 'candlestick',
+   
+ },
+
+ title: {
+  text: 'Annual Chart ' + array[Index],
+  align: 'left'
+},
+tooltip: {},
+xaxis:{},
+yaxis: {}
+})
+
+const [series, setSeries]=useState([{
+    name: 'candle',
+    data:
+    []}])
+
+
+// console.log(stockName);
+// console.log(stockDate);
+// console.log(seriesArray2)
+//대기 중일 때
+
+if (loading) {
+  return  <p>Loading...</p>;
+}
+if (loading2) {
+  return  <p>Loading...</p>;
+}
+  return (
+    <div id="chart">
+      <ApexCharts 
+        options={{
+          chart: {
+            height: 350,
+            type: 'candlestick',
+            events:{
+              click: function(event, chartContext, config) {
+                setModalIsOpen(true);
+                console.log(event);
+                console.log(config);
+                console.log(modalIsOpen);
+              const stockName=(array[Index]);
+              const dataPointIndex2= config.dataPointIndex;
+            const stockDate=config.config.series[0].data[config.dataPointIndex].x;
+            console.log(stockDate);
+            console.log(stockName);
+            console.log(config.dataPointIndex);
+            setstockName(array[Index])
+            setstockDate(config.config.series[0].data[config.dataPointIndex].x);
+                //doubleclick 
+                //if (event.detail === 2) console.log('doubleclick');
               }
-            }
-          ]
-        },
-        tooltip: {
+              },
+         },
+         title: {
+           text: 'Annual Chart ' + array[Index],
+           align: 'left'
+         },
+         tooltip: {
           enabled: true,
         },
-        xaxis: {
-          type: 'category',
-          labels: {
-            formatter: function(val) {
-              return dayjs(val).format('MMM DD HH:mm')
-            }
-          }
-        },
-        yaxis: {
-          tooltip: {
+         xaxis: {
+           type: 'datetime',
+           tooltip: {
             enabled: true
           }
-        }
-      },
-    
-    
-    };
-  }
+         },
+         yaxis: {
+           tooltip: {
+             enabled: true
+           }
+         }
+          }} 
+        series={[{
+          name: 'candle',
+          data: seriesArray
+         }]} 
+        type="candlestick" 
+        height={700} />
 
 
+         <div>
+               <Modal isOpen={modalIsOpen}>
+               <h2><b>STOCK</b>: {stockName} </h2>
+         <b>DATE</b>:{stockDate} 
+       <ul> 
+         
+          <li>TITLE 1 : {seriesArray2[0].title} </li>
+          <li>URL 1 : {seriesArray2[0].url} </li>
+          <li>TITLE 2 : {seriesArray2[1].title} </li>
+          <li>URL 2 : {seriesArray2[1].url} </li>
+          <li>TITLE 3 : {seriesArray2[2].title} </li>
+          <li>URL 3 : {seriesArray2[2].url} </li>
+          <li>TITLE 4 : {seriesArray2[3].title} </li>
+          <li>URL 4 : {seriesArray2[3].url} </li>
+          <li>TITLE 5 : {seriesArray2[4].title} </li>
+          <li>URL 5 : {seriesArray2[4].url} </li>
+          <li>TITLE 6 : {seriesArray2[5].title} </li>
+          <li>URL 6 : {seriesArray2[5].url} </li>
+          <li>TITLE 7 : {seriesArray2[6].title} </li>
+          <li>URL 7 : {seriesArray2[6].url} </li>
+          <li>TITLE 8 : {seriesArray2[7].title} </li>
+          <li>URL 8 : {seriesArray2[7].url} </li>
+          <li>TITLE 9 : {seriesArray2[8].title} </li>
+          <li>URL 9 : {seriesArray2[8].url} </li>
+          <li>TITLE 10 : {seriesArray2[9].title} </li>
+          <li>URL 10 : {seriesArray2[9].url} </li>
 
-  render() {
-    return (
-      
 
-<div id="chart">
-    <ApexCharts 
-    options={this.state.options} 
-    series={this.state.series} 
-    type="candlestick" 
-    height={700} />
-</div>)
+      </ul>
+       
+        <button onClick={()=> setModalIsOpen(false)}>CLOSE</button>
+      </Modal>
+      </div>
+
+
+    </div>
+  ) 
 }
-}
+export default AnnualChart;
