@@ -46,3 +46,14 @@
 
 5. 127.0.0.1:8000/db/pastNews/query=[a]&date=[yymmdd] : 
     yymmdd날 a를 검색했을때 나오는 뉴스들
+
+
+# DB has no column 뭐시기 오류
+1. db.sqlite3 삭제
+2. .venv\scripts\activate
+
+3. cd newStockServer
+4. python manage.py sqlmigrate db 0001
+
+5. python manage.py migrate
+6. python manage.py runserver
