@@ -16,13 +16,13 @@ export default function TreemapChart () {
     loadStock();
   },[]);
 
-  //useEffect( () => {
+  useEffect( () => {
   async function loadPrice() {
     const pricePerTime = await getDailyPriceDB('HMM');
     setPrices(pricePerTime);
    };
    loadPrice();
-  //},[]);
+  },[]);
   
   function setPropsD(arr){
     let chartWidth = 300 * 0.8 ;
