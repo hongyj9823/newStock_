@@ -5,7 +5,6 @@ export default async function getKeywordDB() {
     try {
         retData = await axios.get("http://localhost:8000/db/keywords");
         retData = retData.data.data
-        console.log(retData)
     } catch (error) {
         console.error(error)
     }

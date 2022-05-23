@@ -1,155 +1,123 @@
-import React, { Component } from 'react';
-import { Treemap } from "recharts";
-import '../App.css' 
+import React, {useEffect, useState} from 'react';
+import ReactApexChart from "react-apexcharts";
+import '../App.css';
+import getstockDB from './stockDBGetter';
+import getDailyPriceDB from './dayChartDBGetter';
 
-const data = [
-  {
-    name: "axis",
-    children: [
-      { name: "Axes", size: 1302 },
-      { name: "Axis", size: 24593 },
-      { name: "AxisGridLine", size: 652 },
-      { name: "AxisLabel", size: 636 },
-      { name: "CartesianAxes", size: 6703 }
-    ]
-  },
-  {
-    name: "controls",
-    children: [
-      { name: "AnchorControl", size: 2138 },
-      { name: "ClickControl", size: 3824 },
-      { name: "Control", size: 1353 },
-      { name: "ControlList", size: 4665 },
-      { name: "DragControl", size: 2649 },
-      { name: "ExpandControl", size: 2832 },
-      { name: "HoverControl", size: 4896 },
-      { name: "IControl", size: 763 },
-      { name: "PanZoomControl", size: 5222 },
-      { name: "SelectionControl", size: 7862 },
-      { name: "TooltipControl", size: 8435 }
-    ]
-  },
-  {
-    name: "data",
-    children: [
-      { name: "Data", size: 20544 },
-      { name: "DataList", size: 19788 },
-      { name: "DataSprite", size: 10349 },
-      { name: "EdgeSprite", size: 3301 },
-      { name: "NodeSprite", size: 19382 },
-      {
-        name: "render",
-        children: [
-          { name: "ArrowType", size: 698 },
-          { name: "EdgeRenderer", size: 5569 },
-          { name: "IRenderer", size: 353 },
-          { name: "ShapeRenderer", size: 2247 }
-        ]
-      },
-      { name: "ScaleBinding", size: 11275 },
-      { name: "Tree", size: 7147 },
-      { name: "TreeBuilder", size: 9930 }
-    ]
-  },
-  {
-    name: "events",
-    children: [
-      { name: "DataEvent", size: 7313 },
-      { name: "SelectionEvent", size: 6880 },
-      { name: "TooltipEvent", size: 3701 },
-      { name: "VisualizationEvent", size: 2117 }
-    ]
-  },
-  {
-    name: "legend",
-    children: [
-      { name: "Legend", size: 20859 },
-      { name: "LegendItem", size: 4614 },
-      { name: "LegendRange", size: 10530 }
-    ]
-  },
-  {
-    name: "operator",
-    children: [
-      {
-        name: "distortion",
-        children: [
-          { name: "BifocalDistortion", size: 4461 },
-          { name: "Distortion", size: 6314 },
-          { name: "FisheyeDistortion", size: 3444 }
-        ]
-      },
-      {
-        name: "encoder",
-        children: [
-          { name: "ColorEncoder", size: 3179 },
-          { name: "Encoder", size: 4060 },
-          { name: "PropertyEncoder", size: 4138 },
-          { name: "ShapeEncoder", size: 1690 },
-          { name: "SizeEncoder", size: 1830 }
-        ]
-      },
-      {
-        name: "filter",
-        children: [
-          { name: "FisheyeTreeFilter", size: 5219 },
-          { name: "GraphDistanceFilter", size: 3165 },
-          { name: "VisibilityFilter", size: 3509 }
-        ]
-      },
-      { name: "IOperator", size: 1286 },
-      {
-        name: "label",
-        children: [
-          { name: "Labeler", size: 9956 },
-          { name: "RadialLabeler", size: 3899 },
-          { name: "StackedAreaLabeler", size: 3202 }
-        ]
-      },
-      {
-        name: "layout",
-        children: [
-          { name: "AxisLayout", size: 6725 },
-          { name: "BundledEdgeRouter", size: 3727 },
-          { name: "CircleLayout", size: 9317 },
-          { name: "CirclePackingLayout", size: 12003 },
-          { name: "DendrogramLayout", size: 4853 },
-          { name: "ForceDirectedLayout", size: 8411 },
-          { name: "IcicleTreeLayout", size: 4864 },
-          { name: "IndentedTreeLayout", size: 3174 },
-          { name: "Layout", size: 7881 },
-          { name: "NodeLinkTreeLayout", size: 12870 },
-          { name: "PieLayout", size: 2728 },
-          { name: "RadialTreeLayout", size: 12348 },
-          { name: "RandomLayout", size: 870 },
-          { name: "StackedAreaLayout", size: 9121 },
-          { name: "TreeMapLayout", size: 9191 }
-        ]
-      },
-      { name: "Operator", size: 2490 },
-      { name: "OperatorList", size: 5248 },
-      { name: "OperatorSequence", size: 4190 },
-      { name: "OperatorSwitch", size: 2581 },
-      { name: "SortOperator", size: 2023 }
-    ]
-  }
-];
+export default function TreemapChart () {
+  const [stocks,setStocksComponent] = useState([]);
+  const [timeprices,setPrices] = useState([]);
 
-export default class Chart extends Component  {
-    render() {
-        return (
-          <div style = {{ padding : '0px 20px'}}>
-            <Treemap
-              width={1100}
-              height={600}
-              data={data}
-              dataKey="size"
-              ratio={4 / 3}
-              stroke="#fff"
-              fill="#8884d8"
-              />
-          </div>
-        );
-
+  useEffect( () => {
+    async function loadStock() {
+      const stockList = await getstockDB();
+      setStocksComponent(stockList);
     }
+    loadStock();
+  },[]);
+
+  //useEffect( () => {
+  async function loadPrice() {
+    const pricePerTime = await getDailyPriceDB('HMM');
+    setPrices(pricePerTime);
+   };
+   loadPrice();
+  //},[]);
+  
+  function setPropsD(arr){
+    let chartWidth = 300 * 0.8 ;
+    let chartHeight = 170 * 0.6 ; 
+    let intervalX = chartWidth/arr.length;
+    let maxPrice = arr.reduce((prev,curr) => prev.price > curr.price ? prev.price :curr.price);
+    let minPrice = arr.reduce((prev,curr) => prev.price < curr.price ? prev.price : curr.price);
+    let result = arr.reduce((acc,cur,idx) => {
+      let isFirst = idx ===0;
+      console.log(maxPrice, minPrice);
+      if (isFirst) return 'M'+(intervalX*idx+30)+' '+((1-(cur.price-29450)/(maxPrice-29450))*(chartHeight) +17);
+      return acc + ' L'+(intervalX*idx+30) +' '+ ((1-(cur.price-29450)/(maxPrice-29450))*(chartHeight)+17);
+    },'');
+    return result;
+
+  };
+  
+  const seriesArray = stocks.map(obj => {
+    let newObj = {};
+    newObj['x'] =obj.name;
+    newObj['y'] = obj.price>10000? obj.price/10: obj.price*1;
+    newObj['rate'] = obj.rate;
+    
+    console.log(timeprices);
+    newObj['d'] = setPropsD(timeprices);
+    return newObj;
+  });
+  const colors = stocks.map(obj => {
+    let g = 40;
+    let b = g ;
+    let r = g + parseInt(obj.rate*40);
+    if (r>255) { r =255;}
+    return "rgb(" + [r, g, b].join(",") + ")"
+  });
+
+  const options = {
+    series: [
+      {
+        data: seriesArray
+      }
+    ],
+    options: {
+      legend: {
+        show: false
+      },
+      chart: {
+        events:{
+        
+        },
+        toolbar : {
+          show : false
+        },
+        fontFamily : 'Belvetica, Arial, sans-serit',
+        height: 550,
+        type: 'treemap'
+      },
+      title: {
+        //text: 'Distibuted Treemap (different color for each cell)',
+        // align: 'center'
+      },
+      colors: colors,
+      plotOptions: {
+        treemap: {
+          distributed: true,
+          enableShades: false
+        }
+      },
+      tooltip : {
+        enabled :true,
+        custom : function Custom({series,seriesIndex,dataPointIndex,w}) {
+          let data = w.globals.initialSeries[seriesIndex].data[dataPointIndex] ;
+          //console.log(data.d);
+          var startPoint = "10%";
+          var endPoint = "80%";
+          return '<svg width = " 300px" height = "170px">' +
+          '<line x1="'+ startPoint+ '"y1 ="' + endPoint + '" x2="'+startPoint+'" y2="'+startPoint+'" stroke = "black"/>'+
+          '<line x1="'+startPoint+'" y1 = "'+endPoint+'" x2 ="90%" y2 ="'+endPoint+'" stroke = "black"/>'+
+          '<path d ="' + data.d +'"'+ 
+          'fill = "none" stroke= "#5885F5" stroke-width="1">' +
+          '</path>'+
+          '<g><text x ="10%" y = "90%">'+ data.x + ':' + data.rate +'</text></g>'+
+          '</svg>'
+          }
+      }
+    },
+};
+
+  return(
+    <>
+    <ReactApexChart 
+    options={options.options} 
+    series={options.series} 
+    type="treemap" 
+    height = {550} />
+    
+    </>
+  );
 }

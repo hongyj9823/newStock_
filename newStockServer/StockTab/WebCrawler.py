@@ -32,6 +32,7 @@ def getStocksInfo(code):
     response = requests.get(url, headers=headers)
     jsonObjs = response.json()
     price = jsonObjs['openingPrice']
+    #price = jsonObjs['marketCap']
     rate = round(jsonObjs['changeRate']*100, 2)
     
     return price, rate
