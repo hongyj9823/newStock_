@@ -84,8 +84,10 @@ def initAnnualPriceDB():
 
 
 def initDailyPriceDB():
+    print('Filling Daily Price Database')
     datas = Stocks.objects.values_list('stock_name', 'stock_code')
     now = datetime.now().strftime("%H%M")
+
     if now >= "0900" and now <= "1500":
         if now == "0900":
             print('Clearing Daily Database')
@@ -94,6 +96,9 @@ def initDailyPriceDB():
         for data in datas:
             p = getPriceOnly(data[1])
             DailyPrice(stock_name=data[0], time=now, price=p).save()
+
+    
+    print('Daily Price Database Ready')
 
 
 

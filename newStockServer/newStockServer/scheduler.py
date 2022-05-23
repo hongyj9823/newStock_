@@ -3,7 +3,7 @@ from newStockServer.repeatedTask import updateKeywordsDB, updateStocksDB, update
 
 
 def scheduleAll():
-    sched = BackgroundScheduler()
+    sched = BackgroundScheduler(timezone = 'Asia/Seoul')
 
     sched.add_job(updateKeywordsDB, 'interval', minutes = 30)
     sched.add_job(updateStocksDB, 'interval', minutes = 1)
