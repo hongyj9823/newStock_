@@ -3,10 +3,12 @@ import ReactApexChart from "react-apexcharts";
 import '../App.css';
 import getstockDB from './stockDBGetter';
 import getDailyPriceDB from './dayChartDBGetter';
+import { useNavigate } from "react-router-dom";
 
 export default function TreemapChart () {
   const [stocks,setStocksComponent] = useState([]);
   const [timeprices,setPrices] = useState([]);
+  const navigate=useNavigate();
 
   useEffect( () => {
     async function loadStock() {
@@ -47,7 +49,7 @@ export default function TreemapChart () {
     newObj['rate'] = obj.rate;
     
     console.log(timeprices);
-    newObj['d'] = setPropsD(timeprices);
+    //newObj['d'] = setPropsD(timeprices);
     return newObj;
   });
   const colors = stocks.map(obj => {
@@ -70,8 +72,13 @@ export default function TreemapChart () {
       },
       chart: {
         events:{
-        
-        },
+          click(event, chartContext, config){
+            navigate('/stock/annualchart',{
+              state:{
+                Index: config.dataPointIndex
+              }});
+            }
+         },
         toolbar : {
           show : false
         },
