@@ -62,13 +62,13 @@ def initStockDB():
     for i in range(0, len(code)):
         price, rate = getStocksInfo(code[i])
         Stocks(stock_name=name[i], stock_code=code[i],
-                start_price=price, change_rate=rate).save()
+                market_cap=price, change_rate=rate).save()
 
 
 
 def initAnnualPriceDB():
     print('Clearing Annual Price Database')
-    # 할지 안할지 생각해보기
+    AnnualPrice.objects.all().delete()
 
     datas = Stocks.objects.values_list('stock_name', 'stock_code')
     today = datetime.today().strftime("%Y%m%d")
@@ -78,15 +78,16 @@ def initAnnualPriceDB():
     for data in datas:
         siseList = getAllSise(data[1], lastyear, today, 'day')
         for j in range(1, len(siseList)):
-             #'날짜', '시가', '고가', '저가', '종가'
             AnnualPrice(stock_name=data[0], date=siseList[j][0], start_price=siseList[j][1],
                         max_price=siseList[j][2], min_price=siseList[j][3], end_price=siseList[j][4]).save()
         
 
 
 def initDailyPriceDB():
+    print('Filling Daily Price Database')
     datas = Stocks.objects.values_list('stock_name', 'stock_code')
     now = datetime.now().strftime("%H%M")
+
     if now >= "0900" and now <= "1500":
         if now == "0900":
             print('Clearing Daily Database')
@@ -95,6 +96,9 @@ def initDailyPriceDB():
         for data in datas:
             p = getPriceOnly(data[1])
             DailyPrice(stock_name=data[0], time=now, price=p).save()
+
+    
+    print('Daily Price Database Ready')
 
 
 

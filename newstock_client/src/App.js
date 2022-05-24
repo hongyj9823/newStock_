@@ -1,7 +1,6 @@
 import React from 'react';
 import HeadLogo from './components/HeadLogo.js';
 import KeywordPanel from './keywordPage/keywordPanel.js';
-import DailyNews from './keywordPage/newsOverlay.js';
 import TreemapChart from './StockPage/TreemapChart.js';
 import AnnualChart from './StockPage/AnnualChart.js';
 import Footer from './components/Footer.js';

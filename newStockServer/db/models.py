@@ -16,7 +16,7 @@ class Keywords(models.Model):
 class Stocks(models.Model) :
     stock_name = models.CharField(max_length=100)
     stock_code = models.CharField(max_length=10)
-    start_price = models.IntegerField()
+    market_cap = models.IntegerField()
     change_rate = models.FloatField()
 # class Stocks(models.Model) :
 #     stock_name = models.CharField(max_length=100)

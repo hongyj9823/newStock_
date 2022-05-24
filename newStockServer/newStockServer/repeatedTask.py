@@ -5,6 +5,7 @@ from db.models import Keywords, Stocks, AnnualPrice, DailyPrice
 from datetime import datetime
 
 
+
 # Keywords DB
 def updateKeywordsDB():
     print('Keyword Gen Running (Update)')
@@ -60,3 +61,10 @@ def updateDailyPriceDB():
             DailyPrice(stock_name=data[0], time=now, price=p).save()
 
 
+import random
+def testUpdate():
+    for keyword in Keywords.objects.all():
+        dif = random.randrange(-1000, 1001)
+        keyword.importance += dif
+        keyword.save()
+    

@@ -2,18 +2,19 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from db.models import Keywords, Stocks, AnnualPrice, DailyPrice
 from NewsTab.NewsSearcher import searchPastNews
+from StockTab.PointCalculater import setPropsD
 from datetime import datetime
 
 # Create your views here.
 def getKeywordDatabaseJson(request):
-    keyword_datas = Keywords.objects.order_by('-importance')[:10]
+    keyword_datas = Keywords.objects.all()
     data = []
     for keyword_data in keyword_datas:
         single_data = {}
         single_data['keyword'] = keyword_data.keywords_text
         single_data['importance'] = keyword_data.importance
         single_data['stocks'] = keyword_data.related_stocks.split('/')
-        single_data['summary'] = keyword_data.summarized_text
+        single_data['summary'] = keyword_data.summarized_text.split('\\n')
         single_data['news'] = []
         if keyword_data.news_title_1 != None and keyword_data.news_url_1 != None:
             single_data['news'].append({'title' : keyword_data.news_title_1, 'url' : keyword_data.news_url_1})
@@ -28,13 +29,12 @@ def getKeywordDatabaseJson(request):
 
 
 def getStockDatabaseJson(request):
-    stock_datas = Stocks.objects.all()
+    stock_datas = Stocks.objects.all().order_by('-market_cap')
     data = []
     for stock_data in stock_datas:
         single_data = {}
         single_data['name'] = stock_data.stock_name
-        single_data['code'] = stock_data.stock_code
-        single_data['price'] = stock_data.start_price
+        single_data['price'] = stock_data.market_cap
         single_data['rate'] = stock_data.change_rate
         data.append(single_data)
     
@@ -69,7 +69,19 @@ def getAnnualDatabaseJson(request, stock_name):
     return JsonResponse({'data': data}, json_dumps_params={'ensure_ascii':False})
 
 
+def getDailyDatabaseJson(request, stock_name):
+    Daily_datas = DailyPrice.objects.filter(stock_name = stock_name)
+    data = []
+    result = setPropsD(Daily_datas.values_list('price'))
+    stock_names = Stocks.objects.values_list('stock_name')
+    single_data = {}
+    single_data['name'] = stock_name
+    single_data['point'] = result
+    data.append(single_data)
 
+    return JsonResponse({'data' : data}, json_dumps_params={'ensure_ascii':False})
+
+'''
 def getDailyDatabaseJson(request, stock_name):
     Daily_datas = DailyPrice.objects.filter(stock_name = stock_name)
     data = []
@@ -81,7 +93,7 @@ def getDailyDatabaseJson(request, stock_name):
         data.append(single_data)
 
     return JsonResponse({'data' : data}, json_dumps_params={'ensure_ascii':False})
-
+'''
 
 
 def getPastNewsJson(request, query, date):

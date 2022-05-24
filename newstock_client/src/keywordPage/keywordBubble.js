@@ -23,9 +23,8 @@ export default function KeywordBubble ({data, updater}){
         }
     `;
     const tip = `
-        <h1> headline </h1>
-        <span> news summary related with ${data.keyword}</span>
-        <p> ${data.stocks} </p>
+        <h1> ${data.keyword} </h1>
+        <p> 관련주식: ${data.stocks} </p>
         <ul>
             <li> ${data.summary} </li>
         </ul>
@@ -35,12 +34,12 @@ export default function KeywordBubble ({data, updater}){
         const max = 10000
         const min = 1000
         let r
-        if (importance > max) r = 255
-        else if (importance < min) r = 0
-        else r = (importance - min) / (max - min) * 255
+        if (importance > max) r = 200
+        else if (importance < min) r = 100
+        else r = (importance - min) / (max - min) * 100 + 100
 
-        let b = 255 - r
-        let g = 0
+        let b = r
+        let g = r
         return "rgb(" + [r, g, b].join(",") + ")"
     }
 
