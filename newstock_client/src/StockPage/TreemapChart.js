@@ -6,6 +6,7 @@ import getDailyPriceDB from './dayChartDBGetter';
 import { useNavigate } from "react-router-dom";
 
 export default function TreemapChart () {
+  
   const [stocks,setStocksComponent] = useState([]);
   const [timeprices,setPrices] = useState([]);
   const navigate=useNavigate();
@@ -39,7 +40,6 @@ export default function TreemapChart () {
       return acc + ' L'+(intervalX*idx+30) +' '+ ((1-(cur.price-29450)/(maxPrice-29450))*(chartHeight)+17);
     },'');
     return result;
-
   };
   
   const seriesArray = stocks.map(obj => {
@@ -86,10 +86,6 @@ export default function TreemapChart () {
         height: 550,
         type: 'treemap'
       },
-      title: {
-        //text: 'Distibuted Treemap (different color for each cell)',
-        // align: 'center'
-      },
       colors: colors,
       plotOptions: {
         treemap: {
@@ -116,7 +112,6 @@ export default function TreemapChart () {
       }
     },
 };
-
   return(
     <>
     <ReactApexChart 

@@ -36,25 +36,12 @@ useEffect(() => {
   fetchData();
   },[stockDate]);//stockDate2가 갱신될때마다 실행
 
-
-
-
-// console.log(stockName);
-// console.log(stockDate);
- console.log(seriesArray)
-//대기 중일 때
-console.log(loading)
 if (loading) {
   return  <p>Loading...</p>;
 }
-// if (loading2) {
-//   return  <p>Loading...</p>;
-// }
-
   console.log(seriesArray)
   return (
     <div >
-  
     <p>annualpastnews</p>
     <b>{seriesArray[0].title}</b> <span>{seriesArray[0].url}</span>
     <b>{seriesArray[1].title}</b> <span>{seriesArray[1].url}</span>
@@ -68,5 +55,4 @@ if (loading) {
     </div>
   ) 
 }
-
 export default AnnualNews;

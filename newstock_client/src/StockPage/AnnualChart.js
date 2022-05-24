@@ -62,18 +62,9 @@ const [series, setSeries]=useState([{
     name: 'candle',
     data:[]}])
 
-
-// console.log(stockName);
-// console.log(stockDate);
-// console.log(seriesArray2)
-//대기 중일 때
-
 if (loading) {
   return  <p>Loading...</p>;
 }
-// if (loading2) {
-//   return  <p>Loading...</p>;
-// }
   return (
     <div id="chart">
       <ApexCharts 
