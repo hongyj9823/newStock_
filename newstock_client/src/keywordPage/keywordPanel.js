@@ -73,7 +73,18 @@ export default function KeywordPanel() {
         <BubbleUI options = {options} className = "myBubbleUI" >
             {children}
         </BubbleUI>
-        <ReactTooltip className = "eachBub" id = "bubble" effect ="solid" data-delayHide="0"/>
+        <ReactTooltip className = "eachBub" id = "bubble" effect ="solid" data-delayHide="0" type = "light" 
+        overridePosition={ (
+            { left, top },
+            currentEvent, currentTarget, node) => {
+            const d = document.documentElement;
+            left = Math.min(d.clientWidth - node.clientWidth, left);
+            top = Math.min(d.clientHeight - node.clientHeight, top);
+            left = Math.max(0, left);
+            top = Math.max(0, top);
+            return { top, left }
+            }} 
+        />
         {
             (Object.entries(overlay).length !== 0) ? 
             (<NewsOverlay props = {overlay} updater = {updateOverlay}/>) : (<></>)

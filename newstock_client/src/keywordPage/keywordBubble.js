@@ -1,33 +1,16 @@
 import React from 'react';
-import {Link} from "react-router-dom";
-import styled, {keyframes} from 'styled-components';
+
 
 export default function KeywordBubble ({data, updater}){
-    const blinking = keyframes`
-        0% {
-            opacity : 1;
-        }
-        50% {
-            opacity : 0;
-        }
-        100% {
-            opacity ; 1;
-        }
-    `;
-    const StyledLink = styled(Link)`
-        text-decoration : none ;
-        color : black;
-        font-size : 20px;
-        &:hover {
-            animation : ${blinking} .75s linear infinite;
-        }
-    `;
+    
     const tip = `
-        <h1> ${data.keyword} </h1>
-        <p> 관련주식: ${data.stocks} </p>
-        <ul>
-            <li> ${data.summary} </li>
-        </ul>
+        <div style ="width : 40%; margin : 0 auto;">
+            <h1> ${data.keyword} </h1>
+            <p> 관련주식: ${data.stocks} </p>
+            <ul style = "list-style : none; padding-left : 0px;">
+                <li> ${data.summary} </li>
+            </ul>
+        </div>
         `;
 
     function getColor(importance) {
@@ -48,10 +31,12 @@ export default function KeywordBubble ({data, updater}){
     }
 
     return (
+        <>
         <div className="childComponent" data-html={true} data-tip={tip} data-for = "bubble"
                 style = {{backgroundColor : getColor(data.importance)}} 
                 onClick={handleBubbleClick}>
-            {data.keyword}
+           {data.keyword}
         </div>
+        </>
     );
 }
