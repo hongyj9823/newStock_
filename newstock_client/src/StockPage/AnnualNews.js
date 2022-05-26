@@ -1,5 +1,5 @@
 import React, {  useState, useEffect } from 'react';
-import { useLocation,Link} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import moment from 'moment';
 import axios from 'axios';
 import "./AnnualNews.css";
@@ -19,15 +19,12 @@ let newstockDate= moment(stockDate, "YYYY-MM-DD").format("YYYY.MM.DD")
 let newstockDateplus1= moment(stockDate, "YYYY-MM-DD").add(1, 'days').format("YYYY.MM.DD")
 let newstockDateminus1= moment(stockDate, "YYYY-MM-DD").subtract(1, 'days').format("YYYY.MM.DD")
 
-
 useEffect(() => {   
     const fetchData = async () => {
       setLoading(true);
       const url="http://localhost:8000/db/pastNews/query="+stockName+'&date='+stockDate.split('-').join('').substr(2,7);
       const url1="http://localhost:8000/db/pastNews/query="+stockName+'&date='+String(parseInt(stockDate.split('-').join('').substr(2,7))-1);
       const url2="http://localhost:8000/db/pastNews/query="+stockName+'&date='+String(parseInt(stockDate.split('-').join('').substr(2,7))+1);
-      //console.log(url1)
-      //console.log(url2)
       try {
         const response = await axios.get( url );
         const response1 = await axios.get( url1 );
@@ -62,21 +59,21 @@ useEffect(() => {
     fetchData();
   },[stockDate]);//stockDate2가 갱신될때마다 실행
 
-  if (loading) {
-    return  <p>Loading...</p>;
-  }
+if (loading) {
+  return  <p>Loading...</p>;
+}
 
-  const rendering = (arr)=> {
-    const result = [];
-    for (let i = 0 ; i < 9 ; i++) 
-    {
-      result.push(
-        <li><a href={arr[i].url} target= '_blank'>{arr[i].title}</a></li>
-      )
-    }
+const rendering = (arr)=> {
+  const result = [];
+  for (let i = 0 ; i < 9 ; i++) 
+  {
+    result.push(
+      <li><a href={arr[i].url} target= '_blank'>{arr[i].title}</a></li>
+    )
+  }
     return result;
   };
-  //console.log(seriesArray)
+  
   return (
   <>          
   < h3 align="center">Annual Past News</h3> 
