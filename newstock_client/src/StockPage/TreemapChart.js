@@ -72,12 +72,12 @@ export default function TreemapChart () {
       },
       chart: {
         events:{
-          click(event, chartContext, config){
-            navigate('/stock/annualchart',{
+          click(event, chartContext, config){           
+              navigate('/stock/annualchart',{
               state:{
                 Index: config.dataPointIndex
-              }});
-            }
+              }});           
+          }
          },
         toolbar : {
           show : false

@@ -3,6 +3,7 @@ import ApexCharts from 'react-apexcharts'
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
+
 function AnnualChart(props){
 
 const location =useLocation();
@@ -12,7 +13,7 @@ const [loading, setLoading]=useState(false);
 const navigate=useNavigate();
 const array=[
   '삼성전자', 'LG에너지솔루션', '삼성바이오로직스', 'NAVER', '현대차', 'LG화학', '카카오', '기아', 'POSCO홀딩스', 'KB금융',
-            '삼성물산', '셀트리온', 'SK이노베이션', 'SK', 'HMM', '삼성생명', '두산에너빌리티', '에코프로비엠', '고려아연', '포스코케미칼',
+             '셀트리온', '삼성물산','SK이노베이션', 'SK', 'HMM', '삼성생명', '두산에너빌리티', '에코프로비엠', '고려아연', '포스코케미칼',
             '대한항공','엘앤에프', '삼성화재', '셀트리온헬스케어', 'CJ제일제당', '한온시스템', '미래에셋증권', '현대건설', '카카오게임즈', '펄어비스', 
             '메리프증권', '쌍용C&E', '오리온', 'GS건설', '이마트', '셀트리온제약',  '천보', '리노공업', '알테오젠', '스튜디오드래곤',
             '동진쎄미켐', '씨젠', '솔브레인', '에코프로', 'JYP Ent.', '에스에프에이', 'HLB생명과학', '오스템임플란트',  '대주전자재료', '케이엠더블유',
