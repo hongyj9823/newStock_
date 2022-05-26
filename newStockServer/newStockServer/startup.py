@@ -63,6 +63,8 @@ def initStockDB():
         price, rate = getStocksInfo(code[i])
         Stocks(stock_name=name[i], stock_code=code[i],
                 market_cap=price, change_rate=rate).save()
+    
+    print('Stock Database Ready')
 
 
 
@@ -103,7 +105,9 @@ def initDailyPriceDB():
 
 
 def initAll():
-    init_funcs = [initKeywordsDB, initStockDB, initAnnualPriceDB, initDailyPriceDB]
+    initStockDB();
+
+    init_funcs = [initKeywordsDB, initAnnualPriceDB, initDailyPriceDB]
 
     threads = [threading.Thread(target = func) for func in init_funcs]
     

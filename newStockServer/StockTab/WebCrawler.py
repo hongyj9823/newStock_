@@ -13,7 +13,12 @@ def getAllSise(code, start_time, end_time, time_from='day') :
     get_param = parse.urlencode(get_param)
     url="https://api.finance.naver.com/siseJson.naver?%s"%(get_param)
     response = requests.get(url)
-    return literal_eval(response.text.strip())
+    rescode = response.status_code
+    if(rescode == 200):
+        return literal_eval(response.text.strip())
+    else:
+        print("Error : " + response.text)
+        return None
 
 
 def getStocksInfo(code):
