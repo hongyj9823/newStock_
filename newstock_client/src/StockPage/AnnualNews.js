@@ -15,9 +15,9 @@ const [seriesArray, setSeriesArray] = useState({});
 const [seriesArray1, setSeriesArray1] = useState({});
 const [seriesArray2, setSeriesArray2] = useState({});
 
-let newstockDate= moment(stockDate, "YYYY-MM-DD").format("MMM Do YY")
-let newstockDateplus1= moment(stockDate, "YYYY-MM-DD").add(1, 'days').format("MMM Do YY")
-let newstockDateminus1= moment(stockDate, "YYYY-MM-DD").subtract(1, 'days').format("MMM Do YY")
+let newstockDate= moment(stockDate, "YYYY-MM-DD").format("YYYY.MM.DD")
+let newstockDateplus1= moment(stockDate, "YYYY-MM-DD").add(1, 'days').format("YYYY.MM.DD")
+let newstockDateminus1= moment(stockDate, "YYYY-MM-DD").subtract(1, 'days').format("YYYY.MM.DD")
 
 
 useEffect(() => {   
