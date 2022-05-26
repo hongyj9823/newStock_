@@ -11,7 +11,7 @@ export default function TreemapChart () {
   const [timeprices,setPrices] = useState([]);
   const navigate=useNavigate();
 
-  useEffect( () => {
+  useEffect(() => {
     async function loadStock() {
       const stockList = await getstockDB();
       setStocksComponent(stockList);
@@ -25,15 +25,17 @@ export default function TreemapChart () {
   },[]);
   
   function getPoint(stkname) {
-    let res = timeprices.filter(obj=> obj.name[0] === stkname);
-    return res[0].point;
+    let res = timeprices.filter(obj => obj.name[0] === stkname);
+    if (res[0].hasOwnProperty('point'))
+      return res[0].point;
+    else 
+      return 0
   }
   const seriesArray = stocks.map(obj => {
     let newObj = {};
     newObj['x'] =obj.name;
     newObj['y'] = obj.price>10000? obj.price/10: obj.price*1;
     newObj['rate'] = obj.rate;
-    //newObj['d'] = '';
     newObj['d'] = getPoint(obj.name);
     return newObj;
   });
