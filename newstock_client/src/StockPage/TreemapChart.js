@@ -33,7 +33,8 @@ export default function TreemapChart () {
     newObj['x'] =obj.name;
     newObj['y'] = obj.price>10000? obj.price/10: obj.price*1;
     newObj['rate'] = obj.rate;
-    newObj['d'] =getPoint(obj.name);
+    //newObj['d'] = '';
+    newObj['d'] = getPoint(obj.name);
     return newObj;
   });
   const colors = stocks.map(obj => {
