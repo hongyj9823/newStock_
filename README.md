@@ -42,7 +42,7 @@
 2. 127.0.0.1:8000/db/stocks : 스톡탭 처음에 나올 시가총액 + 상승률
 
 3. 127.0.0.1:8000/db/annual/stock=[a] : a에 대한 연간 차트
-4. 127.0.0.1:8000/db/daily/stock=[a] : a에 대한 일일 차트
+4. 127.0.0.1:8000/db/daily :  일일 차트
 
 5. 127.0.0.1:8000/db/pastNews/query=[a]&date=[yymmdd] : 
     yymmdd날 a를 검색했을때 나오는 뉴스들

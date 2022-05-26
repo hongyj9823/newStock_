@@ -1,6 +1,8 @@
 import React, {  useState, useEffect } from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation,Link} from "react-router-dom";
+import moment from 'moment';
 import axios from 'axios';
+import "./AnnualNews.css";
 
 function AnnualNews(props){
 
@@ -10,61 +12,97 @@ const {stockDate}= location.state;
 const [loading, setLoading]=useState(true);
 
 const [seriesArray, setSeriesArray] = useState({});
-console.log(stockDate);
-console.log(stockName);
+const [seriesArray1, setSeriesArray1] = useState({});
+const [seriesArray2, setSeriesArray2] = useState({});
+
+let newstockDate= moment(stockDate, "YYYY-MM-DD").format("MMM Do YY")
+let newstockDateplus1= moment(stockDate, "YYYY-MM-DD").add(1, 'days').format("MMM Do YY")
+let newstockDateminus1= moment(stockDate, "YYYY-MM-DD").subtract(1, 'days').format("MMM Do YY")
+
 
 useEffect(() => {   
     const fetchData = async () => {
-    setLoading(true);
-   const url="http://localhost:8000/db/pastNews/query="+stockName+'&date='+stockDate.split('-').join('').substr(2,7);
-   //console.log(url)
-    try {
-      const response = await axios.get( url );
-      const seriesArray = response.data.data.map((item, idx) => {
-        return {
-          title: item.title,
-          url: item.url
-        };                  
-      });
-      setSeriesArray(seriesArray);     
-    } 
-    catch (e) {
-      console.log(e);
-    }
-    setLoading(false);
-  };
-  fetchData();
+      setLoading(true);
+      const url="http://localhost:8000/db/pastNews/query="+stockName+'&date='+stockDate.split('-').join('').substr(2,7);
+      const url1="http://localhost:8000/db/pastNews/query="+stockName+'&date='+String(parseInt(stockDate.split('-').join('').substr(2,7))-1);
+      const url2="http://localhost:8000/db/pastNews/query="+stockName+'&date='+String(parseInt(stockDate.split('-').join('').substr(2,7))+1);
+      //console.log(url1)
+      //console.log(url2)
+      try {
+        const response = await axios.get( url );
+        const response1 = await axios.get( url1 );
+        const response2 = await axios.get( url2 );
+        const seriesArray = response.data.data.map((item, idx) => {
+          return {
+            title: item.title,
+            url: item.url
+          };                  
+        });
+        const seriesArray1 = response1.data.data.map((item, idx) => {
+          return {
+            title: item.title,
+            url: item.url
+          };                  
+        });
+        const seriesArray2 = response2.data.data.map((item, idx) => {
+          return {
+            title: item.title,
+            url: item.url
+          };                  
+        });
+        setSeriesArray(seriesArray);     
+        setSeriesArray1(seriesArray1);    
+        setSeriesArray2(seriesArray2);    
+      } 
+      catch (e) {
+        console.log(e);
+      }
+      setLoading(false);
+    };
+    fetchData();
   },[stockDate]);//stockDate2가 갱신될때마다 실행
 
-if (loading) {
-  return  <p>Loading...</p>;
-}
-  const aTagStyle = {
-    color : "white",
-    textDecoration : "none",
-    backgroundColor : "#B5B6B8",
-    borderRadius : "5px",
-    margin : "10px",
-    fontSize : "10px",
-    padding : "5px",
-  };
-  const rendering = ()=> {
+  if (loading) {
+    return  <p>Loading...</p>;
+  }
+
+  const rendering = (arr)=> {
     const result = [];
     for (let i = 0 ; i < 9 ; i++) 
     {
-      result.push(<div style = {{margin : "15px"}}>
-        <b>{seriesArray[i].title}</b>
-        <a href = {seriesArray[i].url} target = "_blank" style = {aTagStyle}><b>원문보기</b></a>
-        </div>)
+      result.push(
+        <li><a href={arr[i].url} target= '_blank'>{arr[i].title}</a></li>
+      )
     }
     return result;
   };
-  console.log(seriesArray)
+  //console.log(seriesArray)
   return (
-    <div style = {{margin : "10px"}}>
-      <h1>Annual Past News</h1>
-      <div className = "sepcificDateNews">{rendering()}</div>
-    </div>
+  <>          
+  < h3 align="center">Annual Past News</h3> 
+    <div class="parent" >
+      <div class="child">
+        <h3 align="center"><b>{newstockDateminus1}</b></h3>
+        <ol>
+          {rendering(seriesArray1)}
+        </ol>
+      </div>
+      {/* 하루전 */}
+      <div class="childcolor"> 
+        <h3 align="center">{newstockDate}</h3>
+        <ol >
+          {rendering(seriesArray)}
+        </ol>
+      </div>
+    {/* 하루후 */}
+      <div class="child" >
+      <h3 align="center"><b>{newstockDateplus1}</b></h3>
+        <ol>
+          {rendering(seriesArray2)}
+        </ol>
+      </div>
+    </div>   
+  </>
   ) 
 }
 export default AnnualNews;

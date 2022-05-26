@@ -33,7 +33,7 @@ export default function TreemapChart () {
     newObj['x'] =obj.name;
     newObj['y'] = obj.price>10000? obj.price/10: obj.price*1;
     newObj['rate'] = obj.rate;
-    newObj['d'] = getPoint(obj.name);
+    newObj['d'] =getPoint(obj.name);
     return newObj;
   });
   const colors = stocks.map(obj => {
@@ -56,12 +56,12 @@ export default function TreemapChart () {
       },
       chart: {
         events:{
-          click(event, chartContext, config){
-            navigate('/stock/annualchart',{
+          click(event, chartContext, config){           
+              navigate('/stock/annualchart',{
               state:{
                 Index: config.dataPointIndex
-              }});
-            }
+              }});           
+          }
          },
         toolbar : {
           show : false
