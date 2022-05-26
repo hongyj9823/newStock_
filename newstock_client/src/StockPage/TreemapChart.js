@@ -16,23 +16,24 @@ export default function TreemapChart () {
       const stockList = await getstockDB();
       setStocksComponent(stockList);
     }
+    async function loadPrice() {
+      const pricePerTime = await getDailyPriceDB();
+      setPrices(pricePerTime);
+     };
     loadStock();
+    loadPrice();
   },[]);
-
-
-  async function loadPrice(stk) {
-    const pricePerTime = await getDailyPriceDB(stk);
-    setPrices(pricePerTime);
-   };
   
+  function getPoint(stkname) {
+    let res = timeprices.filter(obj=> obj.name[0] === stkname);
+    return res[0].point;
+  }
   const seriesArray = stocks.map(obj => {
     let newObj = {};
-    loadPrice(obj.name);
     newObj['x'] =obj.name;
     newObj['y'] = obj.price>10000? obj.price/10: obj.price*1;
     newObj['rate'] = obj.rate;
-    console.log(timeprices.name);
-    newObj['d'] = timeprices.point;
+    newObj['d'] = getPoint(obj.name);
     return newObj;
   });
   const colors = stocks.map(obj => {

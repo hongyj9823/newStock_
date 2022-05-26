@@ -7,6 +7,6 @@ urlpatterns = [
     path('keywords', views.getKeywordDatabaseJson, name='getKeywordDatabaseJson'), 
     path('stocks', views.getStockDatabaseJson, name='getStockDatabaseJson'), 
     path('annual/stock=<str:stock_name>', views.getAnnualDatabaseJson, name='getAnnualDatabaseJson'),
-    path('daily/stock=<str:stock_name>', views.getDailyDatabaseJson, name='getDailyDatabaseJson'),
+        path('daily', views.getDailyDatabaseJson, name='getDailyDatabaseJson'),
     path('pastNews/query=<str:query>&date=<str:date>', views.getPastNewsJson, name='getPastNewsJson')
 ]

@@ -17,7 +17,7 @@ useEffect(() => {
     const fetchData = async () => {
     setLoading(true);
    const url="http://localhost:8000/db/pastNews/query="+stockName+'&date='+stockDate.split('-').join('').substr(2,7);
-   console.log(url)
+   //console.log(url)
     try {
       const response = await axios.get( url );
       const seriesArray = response.data.data.map((item, idx) => {
@@ -39,19 +39,31 @@ useEffect(() => {
 if (loading) {
   return  <p>Loading...</p>;
 }
+  const aTagStyle = {
+    color : "white",
+    textDecoration : "none",
+    backgroundColor : "#B5B6B8",
+    borderRadius : "5px",
+    margin : "10px",
+    fontSize : "10px",
+    padding : "5px",
+  };
+  const rendering = ()=> {
+    const result = [];
+    for (let i = 0 ; i < 9 ; i++) 
+    {
+      result.push(<div style = {{margin : "15px"}}>
+        <b>{seriesArray[i].title}</b>
+        <a href = {seriesArray[i].url} target = "_blank" style = {aTagStyle}><b>원문보기</b></a>
+        </div>)
+    }
+    return result;
+  };
   console.log(seriesArray)
   return (
-    <div >
-    <p>annualpastnews</p>
-    <b>{seriesArray[0].title}</b> <span>{seriesArray[0].url}</span>
-    <b>{seriesArray[1].title}</b> <span>{seriesArray[1].url}</span>
-    <b>{seriesArray[2].title}</b> <span>{seriesArray[2].url}</span>
-    <b>{seriesArray[3].title}</b> <span>{seriesArray[3].url}</span>
-    <b>{seriesArray[4].title}</b> <span>{seriesArray[4].url}</span>
-    <b>{seriesArray[5].title}</b> <span>{seriesArray[5].url}</span>
-    <b>{seriesArray[6].title}</b> <span>{seriesArray[6].url}</span>
-    <b>{seriesArray[7].title}</b> <span>{seriesArray[7].url}</span>
-    <b>{seriesArray[8].title}</b> <span>{seriesArray[8].url}</span>
+    <div style = {{margin : "10px"}}>
+      <h1>Annual Past News</h1>
+      <div className = "sepcificDateNews">{rendering()}</div>
     </div>
   ) 
 }

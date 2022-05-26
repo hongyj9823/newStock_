@@ -42,7 +42,7 @@ export default function NewsOverlay({props, updater}) {
                     {props.summary.map((item, index) => {
                         return <li style = {{padding : "10px 0px"}}key = {index}> 
                         <span style = {{backgroundColor : "grey", borderRadius : "5px",color :"white",padding : "2px 5px", fontSize : "12px"}}>
-                            요약 {index}</span> {item}</li>
+                            요약 {index+1}</span> {item}</li>
                     })}
                 </ul>
                 {props.news.map((item, index) => {

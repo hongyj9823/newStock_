@@ -69,31 +69,18 @@ def getAnnualDatabaseJson(request, stock_name):
     return JsonResponse({'data': data}, json_dumps_params={'ensure_ascii':False})
 
 
-def getDailyDatabaseJson(request, stock_name):
-    Daily_datas = DailyPrice.objects.filter(stock_name = stock_name)
-    data = []
-    result = setPropsD(Daily_datas.values_list('price'))
+def getDailyDatabaseJson(request):
     stock_names = Stocks.objects.values_list('stock_name')
-    single_data = {}
-    single_data['name'] = stock_name
-    single_data['point'] = result
-    data.append(single_data)
-
-    return JsonResponse({'data' : data}, json_dumps_params={'ensure_ascii':False})
-
-'''
-def getDailyDatabaseJson(request, stock_name):
-    Daily_datas = DailyPrice.objects.filter(stock_name = stock_name)
     data = []
-    for Daily_data in Daily_datas:
+    for stock_name in stock_names:
+        price_datas = DailyPrice.objects.filter(stock_name = stock_name[0]).values_list('price')
+        result = setPropsD(price_datas)
         single_data = {}
-        single_data['name'] = Daily_data.stock_name
-        single_data['time'] = Daily_data.time
-        single_data['price'] = Daily_data.price
+        single_data['name'] = stock_name
+        single_data['point'] = result
         data.append(single_data)
 
     return JsonResponse({'data' : data}, json_dumps_params={'ensure_ascii':False})
-'''
 
 
 def getPastNewsJson(request, query, date):
