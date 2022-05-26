@@ -19,37 +19,20 @@ export default function TreemapChart () {
     loadStock();
   },[]);
 
-  useEffect( () => {
-  async function loadPrice() {
-    const pricePerTime = await getDailyPriceDB('HMM');
+
+  async function loadPrice(stk) {
+    const pricePerTime = await getDailyPriceDB(stk);
     setPrices(pricePerTime);
    };
-   loadPrice();
-  },[]);
-  
-  function setPropsD(arr){
-    let chartWidth = 300 * 0.8 ;
-    let chartHeight = 170 * 0.6 ; 
-    let intervalX = chartWidth/arr.length;
-    let maxPrice = arr.reduce((prev,curr) => prev.price > curr.price ? prev.price :curr.price);
-    let minPrice = arr.reduce((prev,curr) => prev.price < curr.price ? prev.price : curr.price);
-    let result = arr.reduce((acc,cur,idx) => {
-      let isFirst = idx ===0;
-      console.log(maxPrice, minPrice);
-      if (isFirst) return 'M'+(intervalX*idx+30)+' '+((1-(cur.price-29450)/(maxPrice-29450))*(chartHeight) +17);
-      return acc + ' L'+(intervalX*idx+30) +' '+ ((1-(cur.price-29450)/(maxPrice-29450))*(chartHeight)+17);
-    },'');
-    return result;
-  };
   
   const seriesArray = stocks.map(obj => {
     let newObj = {};
+    loadPrice(obj.name);
     newObj['x'] =obj.name;
     newObj['y'] = obj.price>10000? obj.price/10: obj.price*1;
     newObj['rate'] = obj.rate;
-    
-    console.log(timeprices);
-    //newObj['d'] = setPropsD(timeprices);
+    console.log(timeprices.name);
+    newObj['d'] = timeprices.point;
     return newObj;
   });
   const colors = stocks.map(obj => {

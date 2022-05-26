@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from db.models import Keywords, Stocks, AnnualPrice, DailyPrice
 from NewsTab.NewsSearcher import searchPastNews
+from StockTab.PointCalculater import setPropsD
 from datetime import datetime
 
 # Create your views here.
@@ -68,7 +69,19 @@ def getAnnualDatabaseJson(request, stock_name):
     return JsonResponse({'data': data}, json_dumps_params={'ensure_ascii':False})
 
 
+def getDailyDatabaseJson(request, stock_name):
+    Daily_datas = DailyPrice.objects.filter(stock_name = stock_name)
+    data = []
+    result = setPropsD(Daily_datas.values_list('price'))
+    stock_names = Stocks.objects.values_list('stock_name')
+    single_data = {}
+    single_data['name'] = stock_name
+    single_data['point'] = result
+    data.append(single_data)
 
+    return JsonResponse({'data' : data}, json_dumps_params={'ensure_ascii':False})
+
+'''
 def getDailyDatabaseJson(request, stock_name):
     Daily_datas = DailyPrice.objects.filter(stock_name = stock_name)
     data = []
@@ -80,7 +93,7 @@ def getDailyDatabaseJson(request, stock_name):
         data.append(single_data)
 
     return JsonResponse({'data' : data}, json_dumps_params={'ensure_ascii':False})
-
+'''
 
 
 def getPastNewsJson(request, query, date):
