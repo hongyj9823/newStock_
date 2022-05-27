@@ -13,14 +13,8 @@ export default function KeywordBubble ({data, updater}){
         </div>
         `;
 
-    function getColor(importance) {
-        const max = 10000
-        const min = 1000
-        let r
-        if (importance > max) r = 200
-        else if (importance < min) r = 100
-        else r = (importance - min) / (max - min) * 100 + 100
-
+    function getColor(normalized) {
+        let r = (normalized) * 100 + 100
         let b = r
         let g = r
         return "rgb(" + [r, g, b].join(",") + ")"
@@ -33,7 +27,7 @@ export default function KeywordBubble ({data, updater}){
     return (
         <>
         <div className="childComponent" data-html={true} data-tip={tip} data-for = "bubble"
-                style = {{backgroundColor : getColor(data.importance)}} 
+                style = {{backgroundColor : getColor(data.normalized)}} 
                 onClick={handleBubbleClick}>
            {data.keyword}
         </div>
