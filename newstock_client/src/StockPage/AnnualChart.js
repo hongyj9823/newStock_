@@ -77,7 +77,7 @@ if (loading) {
               click: function(event, chartContext, config) {
                 if (event.detail === 2)         
                 {  
-                  console.log(config)
+                  //console.log(config)
                     navigate('/stock/annualchart/pastnews',{
                    state:{
                        stockName : array[Index],

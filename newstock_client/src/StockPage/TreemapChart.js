@@ -4,11 +4,12 @@ import '../App.css';
 import getstockDB from './stockDBGetter';
 import getDailyPriceDB from './dayChartDBGetter';
 import { useNavigate } from "react-router-dom";
-
+import { useInterval } from '../Hooks/useInterval';
 export default function TreemapChart () {
   
   const [stocks,setStocksComponent] = useState([]);
   const [timeprices,setPrices] = useState([]);
+  const [rendertrigger,setTrigger] = useState(1);
   const navigate=useNavigate();
 
   useEffect(() => {
@@ -22,7 +23,14 @@ export default function TreemapChart () {
      };
     loadStock();
     loadPrice();
-  },[]);
+    console.log("re-render");
+  },[rendertrigger]);
+
+  useInterval(changeTrigger,1000*60);
+
+  function changeTrigger(){
+    setTrigger(rendertrigger*-1);
+  };
   
   function getPoint(stkname) {
     let res = timeprices.filter(obj => obj.name[0] === stkname);
