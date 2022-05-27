@@ -16,7 +16,7 @@ export default async function getKeywordDB() {
                 min = singleData.importance
         }
 
-        if (max != min)
+        if (max !== min)
             for (let i = 0; i < retData.length; i++) 
                 retData[i].normalized = (retData[i].importance - min) / (max - min)
         else
