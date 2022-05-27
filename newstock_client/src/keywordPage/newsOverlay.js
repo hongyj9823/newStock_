@@ -12,7 +12,8 @@ export default function NewsOverlay({props, updater}) {
         width : "100%",
         height : "80%",
         zIndex : "1000",
-        overflowY : "auto"
+        overflowY : "auto",
+        fontFamily: '"Noto Sans KR", sans-serif'
     }
     function handleOverlay() {
         updater({})
@@ -48,7 +49,8 @@ export default function NewsOverlay({props, updater}) {
                 {props.news.map((item, index) => {
                     return <ul key = {index} > News {index + 1}
                         <li key = {2*index}>{item.title}</li>
-                        <li style = {{listStyle : "none"}} key = {2*index+1}>{item.url}</li>
+                        {/* <li style = {{listStyle : "none"}} key = {2*index+1}>{item.url}</li> */}
+                        <a href = {item.url} target="_blank">{item.url}</a>
                     </ul>
                 })}
             </div>

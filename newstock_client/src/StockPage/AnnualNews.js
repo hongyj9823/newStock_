@@ -78,21 +78,21 @@ const rendering = (arr)=> {
   <>          
   < h3 align="center">Annual Past News</h3> 
     <div class="parent" >
-      <div class="child">
+      <div class="child setting">
         <h3 align="center"><b>{newstockDateminus1}</b></h3>
         <ol>
           {rendering(seriesArray1)}
         </ol>
       </div>
       {/* 하루전 */}
-      <div class="childcolor"> 
+      <div class="childcolor setting"> 
         <h3 align="center">{newstockDate}</h3>
         <ol >
           {rendering(seriesArray)}
         </ol>
       </div>
-    {/* 하루후 */}
-      <div class="child" >
+      {/* 하루후 */}
+      <div class="child setting" >
       <h3 align="center"><b>{newstockDateplus1}</b></h3>
         <ol>
           {rendering(seriesArray2)}

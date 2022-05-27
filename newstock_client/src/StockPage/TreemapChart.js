@@ -26,12 +26,12 @@ export default function TreemapChart () {
   
   function getPoint(stkname) {
     let res = timeprices.filter(obj => obj.name[0] === stkname);
-    if (res.length == 0)
+    if (res.length === 0)
       return 0
     if (res[0].hasOwnProperty('point'))
       return res[0].point;
     else 
-      return 0
+      return 0;
   }
   const seriesArray = stocks.map(obj => {
     let newObj = {};

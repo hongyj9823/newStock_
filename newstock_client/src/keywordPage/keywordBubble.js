@@ -4,7 +4,7 @@ import React from 'react';
 export default function KeywordBubble ({data, updater}){
     
     const tip = `
-        <div style ="width : 40%; margin : 0 auto;">
+        <div style ="width : 40%; margin : 0 auto; font-family: 'Noto Sans KR', sans-serif;">
             <h1> ${data.keyword} </h1>
             <p> 관련주식: ${data.stocks} </p>
             <ul style = "list-style : none; padding-left : 0px;">
