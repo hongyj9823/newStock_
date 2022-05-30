@@ -65,7 +65,7 @@ if (loading) {
 
 const rendering = (arr)=> {
   const result = [];
-  for (let i = 0 ; i < 9 ; i++) 
+  for (let i = 0 ; i < 10 ; i++) 
   {
     result.push(
       <li><a href={arr[i].url} target= '_blank'>{arr[i].title}</a></li>
