@@ -29,7 +29,7 @@ def getKeywordDatabaseJson(request):
 
 
 def getStockDatabaseJson(request):
-    stock_datas = Stocks.objects.all().order_by('-market_cap')
+    stock_datas = Stocks.objects.all()
     data = []
     for stock_data in stock_datas:
         single_data = {}
