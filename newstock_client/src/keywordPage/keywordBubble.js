@@ -14,9 +14,9 @@ export default function KeywordBubble ({data, updater}){
         `;
 
     function getColor(normalized) {
-        let r = (normalized) * 100 + 100
-        let b = r
-        let g = r
+        let r = 240
+        let g = 200 - (normalized) * 160
+        let b = parseInt(g * 0.8 )
         return "rgb(" + [r, g, b].join(",") + ")"
     }
 

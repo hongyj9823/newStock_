@@ -50,10 +50,12 @@ export default function TreemapChart () {
     return newObj;
   });
   const colors = stocks.map(obj => {
-    let g = 40;
-    let b = g ;
-    let r = g + parseInt(obj.rate*40);
-    if (r>255) { r =255;}
+    let r = 80 + parseInt(obj.rate*50);
+    if (r>255) r = 255;
+    let g = parseInt(r*0.2)+20;
+    if (g <0) g = 0;
+    let b = g;
+
     return "rgb(" + [r, g, b].join(",") + ")"
   });
 
